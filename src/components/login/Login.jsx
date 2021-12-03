@@ -1,7 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import "./Login.scss";
+import Axios from 'axios';
 
 export default function Login() {
+
+    const [username, setName] = useState("");
+    const [password, setPassword] = useState("");
+
+    const addUser = () => {
+        Axios.post('http://localhost:3001/create', {
+                username: username,
+                password: password,
+            }).then(() => {
+                console.log("success");
+        });
+    };
+
+    const display = () => {
+        console.log(username + password);
+    }
 
     return(
         <div className="login-wrapper">
@@ -13,7 +30,7 @@ export default function Login() {
           <label for="pass"> Password </label>
             <input type="text" id = "pass" />
           <div>
-            <button type="submit" id = "submit-login">Submit</button>
+            <button type="submit" id = "submit-login">Log In</button>
           </div>
         </form>
 
@@ -21,12 +38,19 @@ export default function Login() {
 
             <h2> Register </h2>
           <label for="name"> Username </label>
-            <input type="text" id = "name" />
+            <input type="text" id = "name" 
+            onChange={
+                (event) => {setName(event.target.value)}
+            } />
 
           <label for="pass"> Password </label>
-            <input type="text" id = "pass" />
+            <input type="text" id = "pass" 
+            onChange={
+                (event) => {setPassword(event.target.value)}
+            }/>
           <div>
-            <button type="submit" id = "submit-register">Submit</button>
+            <button onClick={() => {addUser()}} type="submit" id = "submit-register"
+            >Register</button>
           </div>
         </form>
       </div>
