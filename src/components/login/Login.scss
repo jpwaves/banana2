@@ -1,0 +1,23 @@
+.login-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+input[type=text], select {
+    width: 100%;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+input[type=text]:hover {
+    background-color: lightslategrey;
+}
+
+button[type=submit]:hover {
+    background-color: cornflowerblue;
+}
