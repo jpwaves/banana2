@@ -1,21 +1,24 @@
 import mysql from "mysql2/promise";
-import { getCategories } from "./helpers.js";
+import {
+  getCategories,
+  queryBadge,
+  queryMemeUsingApiId,
+  queryUser,
+} from "./helpers.js";
 import { db } from "./mysql-connect.js";
 
 /*
 Functions to mysql that we need:
-- [ ] putting a meme into the db
-- [ ] reading a meme into the db
-- [ ] removing a meme from db
-- [ ] adding badges to user
-- [ ] adding a user
-- [ ] reading user info
-- [ ] adding a page
-- [ ] adding memes to a page
-- [ ] removing memes from a page
-- [ ] adding/removing categories to a page (categories of page based on the memes in the page)
-- [ ] get credentials
-- [ ] insert credientials
+- [x] putting a meme into the db
+- [x] reading a meme from the db
+- [x] adding badges to user
+- [x] adding a page
+- [x] edit description of page
+- [x] edit title of page
+- [x] adding memes to a page
+- [x] removing memes from a page
+- [x] get credentials
+- [x] insert credientials
 */
 
 export const checkCredentials = async (username, passwd) => {
@@ -50,39 +53,183 @@ export const insertCredentials = async (username, passwd) => {
   return res;
 };
 
-const getTableSize = async (tableName) => {
-  const query = "SELECT COUNT(*) AS count FROM ?";
-  const [rows] = await db
-    .execute(query, [tableName])
+// const getTableSize = async (tableName) => {
+//   const query = "SELECT COUNT(*) AS count FROM ?";
+//   const [rows] = await db
+//     .execute(query, [tableName])
+//     .then(([res]) => {
+//       return res;
+//     })
+//     .catch((err) => {
+//       throw err;
+//     });
+//   return rows.count;
+// };
+
+// reads a meme (by default is random)
+export const readMeme = async (category = []) => {
+  let query = "SELECT * FROM meme";
+
+  // if categories are specified, alter query to filter for memes that have
+  // at least one of the specified categories associated with them
+  if (category.length !== 0) {
+    const cat = await getCategories(category);
+    query += ` INNER JOIN (SELECT * FROM memeCategory WHERE categoryID IN (${cat[0].toString()})) as mc USING (memeID)`;
+  }
+
+  const res = await db
+    .query(query)
     .then(([res]) => {
       return res;
     })
     .catch((err) => {
       throw err;
     });
-  return rows.count;
+
+  const randIdx = Math.floor(Math.random() * res.length);
+  return res[randIdx];
 };
 
-// reads a meme (by default is random)
-export const readMeme = async (category = []) => {
-  let query;
-  const totalMemes = await getTableSize("meme");
-
-  // +1 because mysql auto increments starting at 1
-  const randIdx = Math.floor(Math.random() * totalMemes) + 1;
-  if (category.length === 0) {
-    // do random meme read
-    query = "SELECT * FROM meme WHERE memeID = ?";
-  } else {
-    // do meme read of memes w/ at least one of the specified categories
-    query = `SELECT * FROM meme INNER JOIN (SELECT * FROM memeCategory WHERE categoryID IN (${
-      getCategories(category)[0]
-    })) as mc USING (memeID)`;
+// insert meme
+// returns 200 on success, 400 on failure
+export const insertMeme = async (memeApiId, imgUrl, type, category) => {
+  let cats;
+  try {
+    cats = await getCategories([category]);
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
   }
+
+  // knows category exists
+
+  // insert meme
+  let queryMeme = "INSERT INTO meme (memeApiID, img, srcType) VALUES (?, ?, ?)";
+  const memeId = await db
+    .execute(queryMeme, [memeApiId, imgUrl, type])
+    .then(([res]) => {
+      return res.insertId;
+    })
+    .catch((err) => {
+      throw err;
+    });
+  const [categoryId] = cats[0];
+
+  let queryMemeCat =
+    "INSERT INTO memeCategory (memeID, categoryID) VALUES (?, ?)";
+
+  // link inserted meme with its category
+  const res = await db
+    .execute(queryMemeCat, [memeId, categoryId])
+    .then(([res]) => {
+      return 200;
+    })
+    .catch((err) => {
+      return 400;
+    });
+  return res;
 };
 
-export const putMeme = (url, type, category) => {};
+// assumes badge = badge name, user = username
+// returns 200 on success, 400 on failure
+export const addBadge = async (badge, user) => {
+  let userId, badgeId;
+  try {
+    userId = await queryUser(user);
+    badgeId = await queryBadge(badge);
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
 
-export const removeMeme = (id) => {};
+  const query =
+    "INSERT INTO userAccumulatedBadges (userID, badgeID) VALUES (?, ?);";
+  const res = await db
+    .execute(query, [userId[0].userID, badgeId[0].badgeID])
+    .then((res) => {
+      return 200;
+    })
+    .catch((err) => {
+      return 400;
+    });
+  return res;
+};
 
-export const addBadge = (badgeId, user) => {};
+// returns 200 on success, 400 on failure
+export const createPage = async (title, desc, username) => {
+  let user;
+  try {
+    user = await queryUser(username);
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
+
+  const query =
+    "INSERT INTO memePage (title, description, creatorID) VALUES (?, ?, ?)";
+  const res = await db
+    .execute(query, [title, desc, username[0].userID])
+    .then((res) => {
+      return 200;
+    })
+    .catch((err) => {
+      return 400;
+    });
+  return res;
+};
+
+// returns 200 on success, 400 on failure
+export const updatePageTitle = async (pageId, newTitle) => {
+  const query = "UPDATE memePage SET title = ? WHERE pageID = ?";
+  const res = await db
+    .execute(query, [newTitle, pageId])
+    .then((res) => {
+      return 200;
+    })
+    .catch((err) => {
+      return 400;
+    });
+  return res;
+};
+
+// returns 200 on success, 400 on failure
+export const updatePageDescription = async (pageId, newDesc) => {
+  const query = "UPDATE memePage SET description = ? WHERE pageID = ?";
+  const res = await db
+    .execute(query, [newDesc, pageId])
+    .then((res) => {
+      return 200;
+    })
+    .catch((err) => {
+      return 400;
+    });
+  return res;
+};
+
+// returns 200 on success, 400 on failure
+export const addMemeToPage = async (pageId, memeId) => {
+  const query = "INSERT INTO memesInPage (pageID, memeID) VALUES (?, ?)";
+  const res = await db
+    .execute(query, [pageId, memeId])
+    .then((res) => {
+      return 200;
+    })
+    .catch((err) => {
+      return 400;
+    });
+  return res;
+};
+
+// returns 200 on success, 400 on failure
+export const removeMemeFromPage = async (pageId, memeId) => {
+  const query = "DELETE FROM memesInPage WHERE pageId = ? AND memeID = ?";
+  const res = await db
+    .execute(query, [pageId, memeId])
+    .then((res) => {
+      return 200;
+    })
+    .catch((err) => {
+      return 400;
+    });
+  return res;
+};

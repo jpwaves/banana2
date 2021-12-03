@@ -1,25 +1,26 @@
-/* eslint-disable no-useless-escape */
-import mysql from "mysql2/promise";
 import { db } from "./mysql-connect.js";
 
-export const commaSepToArr = (categories) => {
-  return categories.split(",").map((elem) => {
+export const commaSepToArr = (str) => {
+  return str.split(",").map((elem) => {
     return elem.trim();
   });
 };
 
-const categoryToString = (category) => {
-  return "'" + category.toString().replace(",", "','") + "'";
+const prepStringArrForQuery = (strArr) => {
+  return strArr.map((elem) => {
+    return "'" + elem + "'";
+  });
 };
 
-export const getCategories = async (category) => {
-  console.log(category.toString());
+// returns 3 element arr, first w ids, second w names, third w both
+export const getCategories = async (category = []) => {
+  let query = "SELECT * FROM category";
+  if (category.length !== 0) {
+    query += ` WHERE name in (${prepStringArrForQuery(category)})`;
+  }
   const res = await db
-    .query(
-      `SELECT * FROM category WHERE name in (${categoryToString(category)})`
-    )
+    .query(query)
     .then(([res]) => {
-      console.log(res);
       return res;
     })
     .catch((err) => {
@@ -36,5 +37,41 @@ export const getCategories = async (category) => {
   return [idOnly, nameOnly, res];
 };
 
-// const res = await getCategories(["cat", "sad"]);
-// console.log(res);
+export const queryMemeUsingApiId = async (memeApiId) => {
+  const query = "SELECT * FROM meme WHERE memeApiId = ?";
+  const res = await db
+    .execute(query, [memeApiId])
+    .then(([res]) => {
+      return res;
+    })
+    .catch((err) => {
+      throw err;
+    });
+  return res;
+};
+
+export const queryUser = async (username) => {
+  const query = "SELECT * FROM appUser WHERE username = ?";
+  const res = await db
+    .execute(query, [username])
+    .then(([res]) => {
+      return res;
+    })
+    .catch((err) => {
+      throw err;
+    });
+  return res;
+};
+
+export const queryBadge = async (badgeName) => {
+  const query = "SELECT * FROM badge WHERE name = ?";
+  const res = await db
+    .execute(query, [badgeName])
+    .then(([res]) => {
+      return res;
+    })
+    .catch((err) => {
+      throw err;
+    });
+  return res;
+};
