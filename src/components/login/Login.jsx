@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import "./Login.scss";
 import Axios from 'axios';
+import { checkCredentials } from '../../middleware';
 
 export default function Login() {
 
     const [username, setName] = useState("");
     const [password, setPassword] = useState("");
+
+    const [loginPassword, setLoginPassword] = useState("");
+    const [loginUsername, setLoginName] = useState("");
+
+    const [loginStatus, setLoginStatus] = useState("");
 
     const addUser = () => {
         Axios.post('http://localhost:3001/create', {
@@ -16,8 +22,9 @@ export default function Login() {
         });
     };
 
-    const display = () => {
-        console.log(username + password);
+    const login = () => {
+        setLoginStatus(checkCredentials(loginUsername, loginPassword));
+        console.log(loginStatus);
     }
 
     return(
@@ -25,12 +32,18 @@ export default function Login() {
         <form id = "exist">
         <h2>Log In</h2>
           <label for="name"> Username </label>
-            <input type="text" id = "name" />
+            <input type="text" id = "name"
+            onChange={
+                (event) => {setLoginName(event.target.value)}
+            } />
 
           <label for="pass"> Password </label>
-            <input type="text" id = "pass" />
+            <input type="text" id = "pass"
+            onChange={
+                (event) => {setLoginPassword(event.target.value)}
+            } />
           <div>
-            <button type="submit" id = "submit-login">Log In</button>
+            <button onClick={() => {login()}} type="submit" id = "submit-login">Log In</button>
           </div>
         </form>
 
