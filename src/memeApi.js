@@ -1,21 +1,20 @@
-import axios, { AxiosRequestConfig } from "axios";
-import { Meme } from "./api-types";
+import axios from "axios";
 import * as dotenv from "dotenv";
 dotenv.config();
 
 const apiKey = process.env.API_KEY;
 
-const getMeme = (category: string) => {
-  const options: AxiosRequestConfig = {
+const getMeme = (category) => {
+  const options = {
     method: "GET",
-    url: "https://humor-jokes-and-memes.p.rapidapi.com/memes/search",
+    url: "https://humor-jokes-and-memes.p.rapidapi.com/memes/random",
     params: {
       "api-key": apiKey,
       number: "1",
       "min-rating": "0",
       "keywords-in-image": "true",
       "media-type": "image",
-      keywords: category,
+      keywords: "cat",
     },
     headers: {
       "x-rapidapi-host": "humor-jokes-and-memes.p.rapidapi.com",
@@ -26,7 +25,7 @@ const getMeme = (category: string) => {
   axios
     .request(options)
     .then(function (response) {
-      const meme: Meme = response.data;
+      const meme = response.data;
       console.log(meme);
       console.log(response.data);
       return meme;
