@@ -10,9 +10,9 @@ const getMeme = (category) => {
     url: "https://humor-jokes-and-memes.p.rapidapi.com/memes/random",
     params: {
       "api-key": apiKey,
-      number: "1",
+      number: "3",
       "min-rating": "0",
-      "keywords-in-image": "true",
+      "keywords-in-image": "false",
       "media-type": "image",
       keywords: "cat",
     },
