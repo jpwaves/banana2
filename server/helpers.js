@@ -1,4 +1,4 @@
-import { db } from "./mysql-connect.js";
+import { db } from "./index.js";
 
 export const commaSepToArr = (str) => {
   return str.split(",").map((elem) => {

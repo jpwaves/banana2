@@ -21,7 +21,7 @@ export default function Login() {
   }, [loginStatus]);
 
   const addUser = () => {
-    Axios.post("http://localhost:3001/create", {
+    Axios.post("http://localhost:3001/createUser", {
       username: username,
       password: password,
     }).then(() => {
