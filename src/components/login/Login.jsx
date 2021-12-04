@@ -6,7 +6,7 @@ import { Navigate, useNavigate } from "react-router";
 export default function Login() {
   const [username, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [userId, setUserId] = userState(0);
+  const [userId, setUserId] = useState(0);
 
   const [loginPassword, setLoginPassword] = useState("");
   const [loginUsername, setLoginName] = useState("");
@@ -46,8 +46,27 @@ export default function Login() {
   };
 
   let navigate = useNavigate();
+
   function handleLogin() {
+    Axios.post("http://localhost:3001/getUserID", {
+      username: loginUsername,
+    })
+      .then((res) => {
+        setUserId(res.data.result);
+        console.log(userId);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     navigate("/dashboard");
+  }
+
+  function checkLogin() {
+    console.log(loginStatus);
+    if (loginStatus === true) {
+      handleLogin();
+    }
   }
 
   const login = () => {
@@ -58,9 +77,7 @@ export default function Login() {
       .then((res) => {
         setLoginStatus(res.data.result);
         clearLoginTxtFields();
-        if (loginStatus) {
-          handleLogin();
-        }
+        checkLogin();
       })
       .catch((err) => {
         console.log(err);
