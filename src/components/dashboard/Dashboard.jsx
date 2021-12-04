@@ -75,6 +75,10 @@ export default function Dashboard() {
 
   return (
     <div className="dash">
+      <div className="btnNav">
+        <button>Create Page</button>
+        <button>My Pages</button>
+      </div>
       <h2> Hello , </h2>
       <div className="memeContainer">
         <img id="meme" src={img} width="900" height="600"></img>

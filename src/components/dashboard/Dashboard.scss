@@ -1,9 +1,21 @@
 .dash {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .h3 {
-    font-size: 5px;
+  font-size: 5px;
+}
+
+.btnNav {
+  width: 100%;
+  display: flex;
+  padding: 0 4rem;
+  justify-content: flex-end;
+}
+
+.btnNav button {
+  padding: 0.5rem 1rem;
+  margin: 0 1rem;
 }
