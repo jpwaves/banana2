@@ -19,6 +19,9 @@ export default function Login() {
       firstUpdate.current = false;
       return;
     }
+    if (loginStatus) {
+      checkLogin();
+    }
     console.log(loginStatus);
   }, [loginStatus]);
 
@@ -63,7 +66,6 @@ export default function Login() {
   }
 
   function checkLogin() {
-    console.log(loginStatus);
     if (loginStatus === true) {
       handleLogin();
     }
@@ -77,7 +79,6 @@ export default function Login() {
       .then((res) => {
         setLoginStatus(res.data.result);
         clearLoginTxtFields();
-        checkLogin();
       })
       .catch((err) => {
         console.log(err);
