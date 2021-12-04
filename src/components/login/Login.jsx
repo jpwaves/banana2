@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Login.scss";
 import Axios from "axios";
+import { Navigate, useNavigate } from "react-router";
 
 export default function Login() {
   const [username, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [userId, setUserId] = userState(0);
 
   const [loginPassword, setLoginPassword] = useState("");
   const [loginUsername, setLoginName] = useState("");
@@ -42,6 +44,12 @@ export default function Login() {
     registerUsernameField.current.value = "";
     registerPasswordField.current.value = "";
   };
+
+  let navigate = useNavigate();
+  function handleLogin() {
+    navigate("/dashboard");
+  }
+
   const login = () => {
     Axios.post("http://localhost:3001/checkCreds", {
       username: loginUsername,
@@ -50,11 +58,15 @@ export default function Login() {
       .then((res) => {
         setLoginStatus(res.data.result);
         clearLoginTxtFields();
+        if (loginStatus) {
+          handleLogin();
+        }
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
 
   return (
     <div className="login-wrapper">

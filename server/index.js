@@ -214,6 +214,52 @@ app.post("/removeMemeFromPage", async (req, res) => {
     });
 });
 
+
+app.post("/favoriteMeme", async (req, res) => {
+  const { userId, memeId } = req.body;
+  const query = "INSERT INTO favorites (userID, memeID) VALUES (?, ?);";
+  await db
+    .execute(query, [userId, memeId])
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
+});
+
+app.post("/checkFav", async (req, res) => {
+  const { userId, memeId } = req.body;
+  const query = "SELECT true FROM favorites WHERE userId = ? AND memeId = ?";
+  await db
+    .execute(query, [req.body.userId, req.body.memeId])
+    .then(([data]) => {
+      if (data.length > 0) {
+        res.send({ result: true });
+      } else {
+        res.send({ result: false });
+      }
+    })
+    .catch((err) => {
+      throw err;
+    });
+});
+
+app.post("/getUserID", async (req, res) => {
+  const { username } = req.body;
+  const query = "SELECT userID FROM favorites WHERE username = ?";
+  await db
+    .execute(query, [req.body.username])
+    .then(([data]) => {
+      res.send(data[0].userID);
+    })
+    .catch((err) => {
+      throw err;
+    });
+});
+
+
 app.listen(3001, () => {
   console.log("yay");
 });
+
