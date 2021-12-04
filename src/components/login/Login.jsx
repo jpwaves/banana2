@@ -20,7 +20,7 @@ export default function Login() {
       return;
     }
     if (loginStatus) {
-      checkLogin();
+      handleLogin();
     }
     console.log(loginStatus);
   }, [loginStatus]);
@@ -51,24 +51,23 @@ export default function Login() {
   let navigate = useNavigate();
 
   function handleLogin() {
+    initUserID();
+    navigate("/dashboard");
+  }
+
+  const initUserID = () => {
+    console.log(loginUsername);
     Axios.post("http://localhost:3001/getUserID", {
       username: loginUsername,
     })
       .then((res) => {
+        console.log(loginUsername);
         setUserId(res.data.result);
         console.log(userId);
       })
       .catch((err) => {
         console.log(err);
       });
-
-    navigate("/dashboard");
-  }
-
-  function checkLogin() {
-    if (loginStatus === true) {
-      handleLogin();
-    }
   }
 
   const login = () => {
