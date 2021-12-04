@@ -1,29 +1,29 @@
 # TO DO LIST
 
-- Add badges to dashboard (put below current stuff)
-- Fix display of memes on dashboard to be image fit
-- Add "create page" and "my page" buttons on dashboard
-  - create page:
+- [x] Add badges to dashboard (put below current stuff)
+- [ ] Fix display of memes on dashboard to be image fit
+- [ ] Add "create page" and "my page" buttons on dashboard
+  - [ ] create page:
     - do an input popup to enter in page title and description
     - submit button creates the new page in the database and reroutes user to the newly created page
-  - my page:
+  - [ ] my page:
   - contains a bullet list of all the pages you have created
   - bullets are just the page title
-- Add react component for a page:
+- [ ] Add react component for a page:
   - put page title at top, description right below, page categories right below as comma separated string
   - put 1 meme on 1 row, add more memes below
-- write project report
-  - readme
+- [ ] write project report
+  - [ ] readme
     - instructions for downloading and running app
     - include all packages that need to be installed
     - include all technologies used (and provide their download link)
-  - provide technical specs
-  - uml of db
-  - logical design (reverse engi the db in mysql workbench)
-  - provide user flow of app, list commands/methods user performs to interact w app
-  - lessons learned
-  - future work
-- record 5-7min video presentation
+  - [ ] provide technical specs
+  - [ ] uml of db
+  - [ ] logical design (reverse engi the db in mysql workbench)
+  - [ ] provide user flow of app, list commands/methods user performs to interact w app
+  - [ ] lessons learned
+  - [ ] future work
+- [ ] record 5-7min video presentation
   - give brief project overview (what is this), describe project schema, architecture, user functionality, user utility
   - must show at least 3 CRUD ops w proof that they worked (i.e. show effects in db?)
 
