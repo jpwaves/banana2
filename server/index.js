@@ -41,6 +41,7 @@ app.post("/createUser", async (req, res) => {
 
   if (username === "" && password === "") {
     res.sendStatus(400);
+    return;
   }
   const query =
     "INSERT INTO appUser (username, passwd, role) VALUES (?, ?, ?);";
@@ -85,6 +86,7 @@ app.post("/createMeme", async (req, res) => {
     cats = await getCategories([category]);
   } catch (err) {
     res.status(400).send(err);
+    return;
   }
 
   // knows category exists
@@ -98,7 +100,11 @@ app.post("/createMeme", async (req, res) => {
     })
     .catch((err) => {
       res.status(400).send(err);
+      return null;
     });
+  if (memeId === null) {
+    return;
+  }
   const [categoryId] = cats[0];
 
   let queryMemeCat =
@@ -214,7 +220,6 @@ app.post("/removeMemeFromPage", async (req, res) => {
     });
 });
 
-
 app.post("/favoriteMeme", async (req, res) => {
   const { userId, memeId } = req.body;
   const query = "INSERT INTO favorites (userID, memeID) VALUES (?, ?);";
@@ -251,15 +256,33 @@ app.post("/getUserID", async (req, res) => {
   await db
     .execute(query, [req.body.username])
     .then(([data]) => {
+<<<<<<< HEAD
       res.send({ result: data[0].userID });
+=======
+      console.log("1");
+      console.log(data[0].userID);
+      res.send(data[0].userID);
+>>>>>>> e5a547af02a822c23aff431d42adf7bcc73364db
     })
     .catch((err) => {
       res.status(400).send(err);
     });
 });
 
+app.post("/getUserBadges", async (req, res) => {
+  const { userId } = req.body;
+  const query =
+    "SELECT name FROM appUser LEFT JOIN userAccumulatedBadges USING (userID) LEFT JOIN badge USING (badgeID) WHERE userID = ?;";
+  await db
+    .execute(query, [userId])
+    .then(([data]) => {
+      res.send({ result: data });
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
+});
 
 app.listen(3001, () => {
   console.log("yay");
 });
-

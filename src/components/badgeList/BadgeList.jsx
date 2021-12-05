@@ -1,0 +1,18 @@
+import React from "react";
+import "./BadgeList.scss";
+
+export default function BadgeList(props) {
+  const { badges } = props;
+
+  const renderBadges = () => {
+    return (
+      <ul>
+        {badges.map((row, index) => {
+          return <li key={index}>{row.name}</li>;
+        })}
+      </ul>
+    );
+  };
+  console.log(1);
+  return badges.length === 0 ? null : renderBadges();
+}
