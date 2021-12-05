@@ -19,6 +19,7 @@ export default function Dashboard({ userID }) {
             category: [],
         })
             .then((res) => {
+
                 setImg(res.data.result.img);
                 setMemeId(res.data.result.memeID);
                 setLiked(false);
@@ -73,9 +74,9 @@ export default function Dashboard({ userID }) {
 
     return (
         <div className="dash">
-            <h2> Hello , </h2>
+            <h2> Click 'Generate Meme' to begin! </h2>
             <div className="memeContainer">
-                <img id="meme" src={img} width="900" height="600"></img>
+                <img id="meme" src={img}></img>
             </div>
             <button
                 onClick={() => {
