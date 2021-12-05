@@ -252,14 +252,11 @@ app.post("/checkFav", async (req, res) => {
 
 app.post("/getUserID", async (req, res) => {
   const { username } = req.body;
-  console.log(req.body.username);
   const query = "SELECT userID FROM appUser WHERE username = ?;";
   await db
-    .execute(query, req.body.username)
+    .execute(query, [req.body.username])
     .then(([data]) => {
-      console.log("1");
-      console.log(data[0].userID);
-      res.send(data[0].userID);
+      res.send({ result: data[0].userID });
     })
     .catch((err) => {
       res.status(400).send(err);
@@ -282,4 +279,30 @@ app.post("/getUserBadges", async (req, res) => {
 
 app.listen(3001, () => {
   console.log("yay");
+});
+
+app.post("/getUsername", async (req, res) => {
+  const { userID } = req.body;
+  const query = "SELECT username FROM appUser WHERE userID = ?;";
+  await db
+    .execute(query, [req.body.userID])
+    .then(([data]) => {
+      res.send({ result: data[0].username });
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
+});
+
+app.post("/getRole", async (req, res) => {
+  const { userID } = req.body;
+  const query = "SELECT role FROM appUser WHERE userID = ?;";
+  await db
+    .execute(query, [req.body.userID])
+    .then(([data]) => {
+      res.send({ result: data[0].role });
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
 });

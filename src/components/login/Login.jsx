@@ -3,15 +3,21 @@ import "./Login.scss";
 import Axios from "axios";
 import { Navigate, useNavigate } from "react-router";
 
-export default function Login() {
+
+export default function Login({ userID, onChange }) {
   const [username, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [userId, setUserId] = useState(0);
+
 
   const [loginPassword, setLoginPassword] = useState("");
   const [loginUsername, setLoginName] = useState("");
 
   const [loginStatus, setLoginStatus] = useState("none");
+
+  const [localID, setLocalID] = useState(0);
+  const [userRole, setRole] = useState("");
+
+
   // check if login status was update correctly (firstUpdate to prevent useEffect from execing on page load)
   const firstUpdate = useRef(true);
   useEffect(() => {
@@ -20,10 +26,18 @@ export default function Login() {
       return;
     }
     if (loginStatus) {
-      handleLogin();
+      initUserID();
     }
     console.log(loginStatus);
   }, [loginStatus]);
+
+  useEffect(() => {
+    initUserRole();
+  }, [userID]);
+
+  useEffect(() => {
+    handleLogin();
+  }, [userRole]);
 
   const addUser = () => {
     Axios.post("http://localhost:3001/createUser", {
@@ -51,19 +65,35 @@ export default function Login() {
   let navigate = useNavigate();
 
   function handleLogin() {
-    initUserID();
-    navigate("/dashboard");
+    if (userRole === 'admin') {
+      navigate("/admin");
+    }
+    else {
+      navigate("/dashboard");
+    }
+
+  }
+
+  const initUserRole = () => {
+    Axios.post("http://localhost:3001/getRole", {
+      userID: userID,
+    })
+      .then((res) => {
+        console.log('nrole: ' + res.data.result);
+        setRole(res.data.result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   const initUserID = () => {
-    console.log(loginUsername);
     Axios.post("http://localhost:3001/getUserID", {
       username: loginUsername,
     })
       .then((res) => {
-        console.log(loginUsername);
-        setUserId(res.data.result);
-        console.log(userId);
+        onChange(res.data.result);
+        setLocalID(res.data.result);
       })
       .catch((err) => {
         console.log(err);
