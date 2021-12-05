@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./Dashboard.scss";
 import Axios from "axios";
-import BadgeList, { MemoizedBadgeList } from "../badgeList/BadgeList";
+import BadgeList from "../badgeList/BadgeList";
 
 export default function Dashboard() {
   const [img, setImg] = useState("");
@@ -76,7 +77,9 @@ export default function Dashboard() {
   return (
     <div className="dash">
       <div className="btnNav">
-        <button>Create Page</button>
+        <Link to="/createPage">
+          <button>Create Page</button>
+        </Link>
         <button>My Pages</button>
       </div>
       <h2> Hello , </h2>
