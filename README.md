@@ -26,6 +26,8 @@
 - [ ] record 5-7min video presentation
   - give brief project overview (what is this), describe project schema, architecture, user functionality, user utility
   - must show at least 3 CRUD ops w proof that they worked (i.e. show effects in db?)
+- [ ] add page to show favorite memes
+  - [ ] allow user to remove memes
 
 # Getting Started with Create React App
 
