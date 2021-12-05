@@ -247,14 +247,11 @@ app.post("/checkFav", async (req, res) => {
 
 app.post("/getUserID", async (req, res) => {
   const { username } = req.body;
-  console.log(req.body.username);
   const query = "SELECT userID FROM appUser WHERE username = ?;";
   await db
-    .execute(query, req.body.username)
+    .execute(query, [req.body.username])
     .then(([data]) => {
-      console.log('1');
-      console.log(data[0].userID);
-      res.send(data[0].userID);
+      res.send({ result: data[0].userID });
     })
     .catch((err) => {
       res.status(400).send(err);

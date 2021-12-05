@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import "./Dashboard.scss";
 import Axios from 'axios';
+import Login from '../login/Login';
 
 export default function Dashboard() {
 
     const [img, setImg] = useState("");
     const [liked, setLiked] = useState(false);
     const [memeId, setMemeId] = useState(0);
+    const [userId, setUserId] = useState(0);
+    const userID = React.useContext(userID);
 
     const genMeme = () => {
         Axios.post("http://localhost:3001/readMeme", {

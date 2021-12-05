@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./Login.scss";
 import Axios from "axios";
 import { Navigate, useNavigate } from "react-router";
+import { renderSync } from "node-sass";
 
 export default function Login() {
   const [username, setName] = useState("");
@@ -12,6 +13,10 @@ export default function Login() {
   const [loginUsername, setLoginName] = useState("");
 
   const [loginStatus, setLoginStatus] = useState("none");
+
+  const userID = React.createContext("");
+
+
   // check if login status was update correctly (firstUpdate to prevent useEffect from execing on page load)
   const firstUpdate = useRef(true);
   useEffect(() => {
@@ -56,14 +61,14 @@ export default function Login() {
   }
 
   const initUserID = () => {
-    console.log(loginUsername);
     Axios.post("http://localhost:3001/getUserID", {
       username: loginUsername,
     })
       .then((res) => {
-        console.log(loginUsername);
         setUserId(res.data.result);
-        console.log(userId);
+        <userID.Provider
+          value={userId}>
+        </userID.Provider>
       })
       .catch((err) => {
         console.log(err);
