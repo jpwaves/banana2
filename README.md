@@ -12,6 +12,7 @@
 - [ ] Add react component for a page:
   - put page title at top, description right below, page categories right below as comma separated string
   - put 1 meme on 1 row, add more memes below
+- [ ] admin dashboard
 - [ ] write project report
   - [ ] readme
     - instructions for downloading and running app
