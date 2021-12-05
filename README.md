@@ -1,7 +1,7 @@
 # TO DO LIST
 
 - [x] Add badges to dashboard (put below current stuff)
-- [ ] Fix display of memes on dashboard to be image fit
+- [x] Fix display of memes on dashboard to be image fit
 - [ ] Add "create page" and "my page" buttons on dashboard
   - [ ] create page:
     - do an input popup to enter in page title and description
