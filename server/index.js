@@ -38,7 +38,6 @@ app.post("/checkCreds", async (req, res) => {
 app.post("/createUser", async (req, res) => {
   const { username } = req.body;
   const { password } = req.body;
-
   if (username === "" && password === "") {
     res.sendStatus(400);
     return;
@@ -51,7 +50,7 @@ app.post("/createUser", async (req, res) => {
       res.sendStatus(200);
     })
     .catch((err) => {
-      res.status(400).send(err);
+      res.status(500).send(err);
     });
 });
 
@@ -146,26 +145,17 @@ app.post("/addBadge", async (req, res) => {
 });
 
 app.post("/createPage", async (req, res) => {
-  const { title, desc, username } = req.body;
-  let user;
-  try {
-    user = await queryUser(username);
-  } catch (err) {
-    console.log(err);
-    throw new Error(err);
-  }
-
+  const { title, desc, userId } = req.body;
   const query =
     "INSERT INTO memePage (title, description, creatorID) VALUES (?, ?, ?)";
   await db
-    .execute(query, [title, desc, user[0].userID])
+    .execute(query, [title, desc, userId])
     .then(() => {
       res.sendStatus(200);
     })
     .catch((err) => {
       res.status(400).send(err);
     });
-  return res;
 });
 
 app.post("/updatePageTitle", async (req, res) => {
