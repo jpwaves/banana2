@@ -1,8 +1,8 @@
 import './App.css';
 import Dashboard from "../src/components/dashboard/Dashboard";
-import PrivateRoute from './components/PrivateRoute';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Login from './components/login/Login';
+import AdminDashboard from './components/adminDash/AdminDashboard';
 import React, { useState } from 'react';
 
 
@@ -21,6 +21,11 @@ function App() {
               <Dashboard userID={userId} />
             }
           />
+          <Route
+            path="/admin"
+            element={
+              <AdminDashboard />
+            } />
         </Routes>
       </BrowserRouter>
     </div>

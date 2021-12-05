@@ -280,3 +280,29 @@ app.post("/getUserBadges", async (req, res) => {
 app.listen(3001, () => {
   console.log("yay");
 });
+
+app.post("/getUsername", async (req, res) => {
+  const { userID } = req.body;
+  const query = "SELECT username FROM appUser WHERE userID = ?;";
+  await db
+    .execute(query, [req.body.userID])
+    .then(([data]) => {
+      res.send({ result: data[0].username });
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
+});
+
+app.post("/getRole", async (req, res) => {
+  const { userID } = req.body;
+  const query = "SELECT role FROM appUser WHERE userID = ?;";
+  await db
+    .execute(query, [req.body.userID])
+    .then(([data]) => {
+      res.send({ result: data[0].role });
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
+});

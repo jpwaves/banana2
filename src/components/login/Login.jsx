@@ -14,6 +14,9 @@ export default function Login({ userID, onChange }) {
 
   const [loginStatus, setLoginStatus] = useState("none");
 
+  const [localID, setLocalID] = useState(0);
+  const [userRole, setRole] = useState("");
+
 
   // check if login status was update correctly (firstUpdate to prevent useEffect from execing on page load)
   const firstUpdate = useRef(true);
@@ -23,10 +26,18 @@ export default function Login({ userID, onChange }) {
       return;
     }
     if (loginStatus) {
-      handleLogin();
+      initUserID();
     }
     console.log(loginStatus);
   }, [loginStatus]);
+
+  useEffect(() => {
+    initUserRole();
+  }, [userID]);
+
+  useEffect(() => {
+    handleLogin();
+  }, [userRole]);
 
   const addUser = () => {
     Axios.post("http://localhost:3001/createUser", {
@@ -54,8 +65,26 @@ export default function Login({ userID, onChange }) {
   let navigate = useNavigate();
 
   function handleLogin() {
-    initUserID();
-    navigate("/dashboard");
+    if (userRole === 'admin') {
+      navigate("/admin");
+    }
+    else {
+      navigate("/dashboard");
+    }
+
+  }
+
+  const initUserRole = () => {
+    Axios.post("http://localhost:3001/getRole", {
+      userID: userID,
+    })
+      .then((res) => {
+        console.log('nrole: ' + res.data.result);
+        setRole(res.data.result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   const initUserID = () => {
@@ -64,6 +93,7 @@ export default function Login({ userID, onChange }) {
     })
       .then((res) => {
         onChange(res.data.result);
+        setLocalID(res.data.result);
       })
       .catch((err) => {
         console.log(err);
