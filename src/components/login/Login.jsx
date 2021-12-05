@@ -29,9 +29,21 @@ export default function Login() {
     Axios.post("http://localhost:3001/createUser", {
       username: username,
       password: password,
-    }).then(() => {
-      console.log("success");
-    });
+    })
+      .then(() => {
+        console.log("success");
+      })
+      .catch((err) => {
+        switch (err.response.status) {
+          case 400:
+            alert("Must enter in a username and password");
+            break;
+          case 500:
+            alert("User already exists");
+            break;
+          default:
+        }
+      });
   };
 
   const loginUsernameField = useRef(null);
@@ -68,7 +80,7 @@ export default function Login() {
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
 
   const login = () => {
     Axios.post("http://localhost:3001/checkCreds", {
@@ -84,10 +96,9 @@ export default function Login() {
       });
   };
 
-
   return (
     <div className="login-wrapper">
-      <form id="exist">
+      <form id="login">
         <h2>Log In</h2>
         <label for="name"> Username </label>
         <input

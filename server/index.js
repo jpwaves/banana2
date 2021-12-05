@@ -38,7 +38,6 @@ app.post("/checkCreds", async (req, res) => {
 app.post("/createUser", async (req, res) => {
   const { username } = req.body;
   const { password } = req.body;
-
   if (username === "" && password === "") {
     res.sendStatus(400);
     return;
@@ -51,7 +50,7 @@ app.post("/createUser", async (req, res) => {
       res.sendStatus(200);
     })
     .catch((err) => {
-      res.status(400).send(err);
+      res.status(500).send(err);
     });
 });
 
