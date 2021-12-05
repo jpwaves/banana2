@@ -3,14 +3,11 @@ import "./Dashboard.scss";
 import Axios from "axios";
 import BadgeList, { MemoizedBadgeList } from "../badgeList/BadgeList";
 
-export default function Dashboard() {
+export default function Dashboard({ userID }) {
     const [img, setImg] = useState("");
     const [liked, setLiked] = useState(false);
     const [memeId, setMemeId] = useState(0);
     const [badges, setBadges] = useState([]);
-
-    const [userId, setUserId] = useState(0);
-    const userID = React.useContext(userID);
 
     // adds the user's badges on page load
     useEffect(() => {
@@ -34,7 +31,7 @@ export default function Dashboard() {
 
     const favMeme = () => {
         Axios.post("http://localhost:3001/favoriteMeme", {
-            userId: 1,
+            userId: userID,
             memeId: memeId,
         })
             .then(() => {
@@ -47,7 +44,7 @@ export default function Dashboard() {
 
     const checkFav = () => {
         Axios.post("http://localhost:3001/checkFav", {
-            userId: 1,
+            userId: userID,
             memeId: memeId,
         })
             .then((res) => {
@@ -63,11 +60,9 @@ export default function Dashboard() {
     // need to change the userId from the hardcoded value to the actual user id
     const getBadges = () => {
         Axios.post("http://localhost:3001/getUserBadges", {
-            userId: 1,
+            userId: userID,
         })
             .then((res) => {
-                console.log(res.data.result);
-                console.log(Array.from(res.data.result));
                 setBadges(res.data.result);
             })
             .catch((err) => {

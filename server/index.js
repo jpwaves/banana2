@@ -256,13 +256,7 @@ app.post("/getUserID", async (req, res) => {
   await db
     .execute(query, [req.body.username])
     .then(([data]) => {
-<<<<<<< HEAD
       res.send({ result: data[0].userID });
-=======
-      console.log("1");
-      console.log(data[0].userID);
-      res.send(data[0].userID);
->>>>>>> e5a547af02a822c23aff431d42adf7bcc73364db
     })
     .catch((err) => {
       res.status(400).send(err);

@@ -2,19 +2,17 @@ import React, { useState, useEffect, useRef } from "react";
 import "./Login.scss";
 import Axios from "axios";
 import { Navigate, useNavigate } from "react-router";
-import { renderSync } from "node-sass";
 
-export default function Login() {
+
+export default function Login({ userID, onChange }) {
   const [username, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [userId, setUserId] = useState(0);
+
 
   const [loginPassword, setLoginPassword] = useState("");
   const [loginUsername, setLoginName] = useState("");
 
   const [loginStatus, setLoginStatus] = useState("none");
-
-  const userID = React.createContext("");
 
 
   // check if login status was update correctly (firstUpdate to prevent useEffect from execing on page load)
@@ -65,10 +63,7 @@ export default function Login() {
       username: loginUsername,
     })
       .then((res) => {
-        setUserId(res.data.result);
-        <userID.Provider
-          value={userId}>
-        </userID.Provider>
+        onChange(res.data.result);
       })
       .catch((err) => {
         console.log(err);
