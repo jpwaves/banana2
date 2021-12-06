@@ -13,6 +13,5 @@ export default function BadgeList(props) {
       </ul>
     );
   };
-  console.log(1);
   return badges.length === 0 ? null : renderBadges();
 }

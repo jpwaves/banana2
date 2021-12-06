@@ -45,7 +45,7 @@ app.post("/createUser", async (req, res) => {
   const query =
     "INSERT INTO appUser (username, passwd, role) VALUES (?, ?, ?);";
   await db
-    .execute(query, [req.body.username, req.body.password, "user"])
+    .execute(query, [username, password, "user"])
     .then(() => {
       res.sendStatus(200);
     })
@@ -128,7 +128,6 @@ app.post("/addBadge", async (req, res) => {
     userId = await queryUser(user);
     badgeId = await queryBadge(badge);
   } catch (err) {
-    console.log(err);
     throw new Error(err);
   }
 
@@ -210,6 +209,19 @@ app.post("/removeMemeFromPage", async (req, res) => {
     });
 });
 
+app.post("/getPageMemes", async (req, res) => {
+  const { pageId } = req.body;
+  const query = "SELECT memeID FROM memesInPage WHERE pageID = ?";
+  await db
+    .execute(query, [pageId])
+    .then(([data]) => {
+      res.send({ result: data });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
 app.post("/favoriteMeme", async (req, res) => {
   const { userId, memeId } = req.body;
   const query = "INSERT INTO favorites (userID, memeID) VALUES (?, ?);";
@@ -275,7 +287,7 @@ app.post("/getUsername", async (req, res) => {
   const { userID } = req.body;
   const query = "SELECT username FROM appUser WHERE userID = ?;";
   await db
-    .execute(query, [req.body.userID])
+    .execute(query, [userID])
     .then(([data]) => {
       res.send({ result: data[0].username });
     })
@@ -288,7 +300,7 @@ app.post("/getRole", async (req, res) => {
   const { userID } = req.body;
   const query = "SELECT role FROM appUser WHERE userID = ?;";
   await db
-    .execute(query, [req.body.userID])
+    .execute(query, [userID])
     .then(([data]) => {
       res.send({ result: data[0].role });
     })

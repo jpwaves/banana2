@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Login.scss";
 import Axios from "axios";
-import { Navigate, useNavigate } from "react-router";
-
+import { useNavigate } from "react-router";
 
 export default function Login({ userID, onChange }) {
   const [username, setName] = useState("");
   const [password, setPassword] = useState("");
-
 
   const [loginPassword, setLoginPassword] = useState("");
   const [loginUsername, setLoginName] = useState("");
@@ -16,7 +14,6 @@ export default function Login({ userID, onChange }) {
 
   const [localID, setLocalID] = useState(0);
   const [userRole, setRole] = useState("");
-
 
   // check if login status was update correctly (firstUpdate to prevent useEffect from execing on page load)
   const firstUpdate = useRef(true);
@@ -77,13 +74,11 @@ export default function Login({ userID, onChange }) {
   let navigate = useNavigate();
 
   function handleLogin() {
-    if (userRole === 'admin') {
+    if (userRole === "admin") {
       navigate("/admin");
-    }
-    else {
+    } else {
       navigate("/dashboard");
     }
-
   }
 
   const initUserRole = () => {
@@ -91,13 +86,13 @@ export default function Login({ userID, onChange }) {
       userID: userID,
     })
       .then((res) => {
-        console.log('nrole: ' + res.data.result);
+        console.log("nrole: " + res.data.result);
         setRole(res.data.result);
       })
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
 
   const initUserID = () => {
     Axios.post("http://localhost:3001/getUserID", {

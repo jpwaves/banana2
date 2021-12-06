@@ -13,7 +13,7 @@ export default function Dashboard({ userID }) {
   // adds the user's badges on page load
   useEffect(() => {
     getBadges();
-  }, []);
+  });
 
   const genMeme = () => {
     Axios.post("http://localhost:3001/readMeme", {

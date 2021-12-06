@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import Axios from "axios";
+import { useNavigate } from "react-router";
 
 export default function CreatePage(props) {
   const [title, setTitle] = useState("");
@@ -21,7 +22,11 @@ export default function CreatePage(props) {
       .then(() => {
         console.log("successfully made page");
         clearFields();
-        // navigate to page component and load appropriate page data
+        alert("successfully made page");
+
+        // navigate to dashboard after successfully creating the page
+        const navigate = useNavigate();
+        navigate("/dashboard");
       })
       .catch((err) => {
         console.log(err);
@@ -36,6 +41,7 @@ export default function CreatePage(props) {
       <form id="pageInputs">
         <label for="title">Page Title</label>
         <input
+          ref={titleField}
           type="text"
           id="title"
           onChange={(event) => {
@@ -46,6 +52,7 @@ export default function CreatePage(props) {
 
         <label for="desc">Description</label>
         <input
+          ref={descField}
           type="text"
           id="desc"
           onChange={(event) => {
