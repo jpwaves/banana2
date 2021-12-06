@@ -9,12 +9,10 @@ export default function Dashboard({ userID }) {
   const [liked, setLiked] = useState(false);
   const [memeId, setMemeId] = useState(0);
   const [badges, setBadges] = useState([]);
-  const [pages, setPages] = useState([]);
 
   // adds the user's badges on page load
   useEffect(() => {
     getBadges();
-    getUserPages();
   }, []);
 
   const genMeme = () => {
@@ -70,18 +68,6 @@ export default function Dashboard({ userID }) {
       .catch((err) => {
         console.log(err);
         return null;
-      });
-  };
-
-  const getUserPages = () => {
-    Axios.post("http://localhost:3001/getUserPages", {
-      userID: userID,
-    })
-      .then((res) => {
-        setPages(res.data.result);
-      })
-      .catch((err) => {
-        console.log(err);
       });
   };
 

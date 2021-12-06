@@ -2,14 +2,14 @@
 
 - [x] Add badges to dashboard (put below current stuff)
 - [x] Fix display of memes on dashboard to be image fit
-- [ ] Add "create page" and "my page" buttons on dashboard
-  - [ ] create page:
+- [x] Add "create page" and "my page" buttons on dashboard
+  - [x] create page:
     - do an input popup to enter in page title and description
     - submit button creates the new page in the database and reroutes user to the newly created page
-  - [ ] my page:
+  - [x] my page:
   - contains a bullet list of all the pages you have created
   - bullets are just the page title
-- [ ] Add react component for a page:
+- [x] Add react component for a page:
   - put page title at top, description right below, page categories right below as comma separated string
   - put 1 meme on 1 row, add more memes below
 - [ ] admin dashboard
@@ -27,9 +27,9 @@
 - [ ] record 5-7min video presentation
   - give brief project overview (what is this), describe project schema, architecture, user functionality, user utility
   - must show at least 3 CRUD ops w proof that they worked (i.e. show effects in db?)
-- [ ] add page for favorited memes
+- [not doing] add page for favorited memes
   - button below each meme to remove it?
-- [ ] add categories to the generate meme on dashboard
+- [not doing] add categories to the generate meme on dashboard
 - [ ] add user input checks to all inputs to make sure input length matches with db schema
 - [ ] enforce 5 pages created max per user
 

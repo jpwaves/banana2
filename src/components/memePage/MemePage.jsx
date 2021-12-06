@@ -2,6 +2,7 @@ import Axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router";
 import MemeList from "../memeList/MemeList";
+import "./MemePage.scss";
 
 export default function MemePage() {
   const location = useLocation();
@@ -30,7 +31,6 @@ export default function MemePage() {
       pageId,
     })
       .then((res) => {
-        console.log(res.data);
         const cats = res.data.result.map((row) => row.name);
         cats.length > 0
           ? setCategories(cats.join(", "))
@@ -48,6 +48,13 @@ export default function MemePage() {
   }, []);
 
   const changeTitle = (newTitle) => {
+    if (newTitle.length > 40) {
+      alert(
+        "This title is too long! Keep the length of the title under 40 characters."
+      );
+      return;
+    }
+
     Axios.post("http://localhost:3001/updatePageTitle", {
       pageId,
       newTitle,
@@ -62,6 +69,13 @@ export default function MemePage() {
   };
 
   const changeDesc = (newDesc) => {
+    if (newDesc.length > 200) {
+      alert(
+        "This description is too long! Keep the length of the description under 200 characters."
+      );
+      return;
+    }
+
     Axios.post("http://localhost:3001/updatePageDescription", {
       pageId,
       newDesc,
@@ -78,7 +92,7 @@ export default function MemePage() {
   return (
     <div className="container">
       <h2>{title}</h2>
-      <p>{desc}</p>
+      <p id="description">{desc}</p>
       <h4>Categories of Memes: {categories}</h4>
       <h3>Memes</h3>
       <MemeList
@@ -102,7 +116,7 @@ export default function MemePage() {
       </form>
       <form id="update-page-desc">
         <label for="desc">Update Description</label>
-        <input ref={descField} type="text" id="desc" />
+        <textarea ref={descField} id="desc" rows="4" />
         <button
           type="button"
           onClick={() => {
