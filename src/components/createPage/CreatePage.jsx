@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import Axios from "axios";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 export default function CreatePage({ userID }) {
   const [title, setTitle] = useState("");
@@ -19,7 +20,7 @@ export default function CreatePage({ userID }) {
       userID,
     })
       .then((res) => {
-        if (res.data.result.length > 5) {
+        if (res.data.result.length >= 5) {
           alert("You have already created the max number of pages!");
           return;
         }
@@ -50,6 +51,14 @@ export default function CreatePage({ userID }) {
 
   return (
     <div className="container">
+      <div className="btnNav">
+        <Link to="/dashboard">
+          <button>Dashboard</button>
+        </Link>
+        <Link to="/myPages">
+          <button>My Pages</button>
+        </Link>
+      </div>
       <h2>Create a Page</h2>
       <form id="pageInputs">
         <label for="title">Page Title</label>

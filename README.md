@@ -31,7 +31,13 @@
   - button below each meme to remove it?
 - [not doing] add categories to the generate meme on dashboard
 - [ ] add user input checks to all inputs to make sure input length matches with db schema
-- [ ] enforce 5 pages created max per user
+- [x] enforce 5 pages created max per user
+- [ ] work on adding badges for view and loyalty
+  - [ ] add view and favorited counts to the app user table (default both to 0)
+  - [ ] add side effect to genMeme in dashboard to increment the viewcount by 1 every time its called
+  - [ ] add triggers for both view and favorited counts to automatically add badge if needed
+    - [ ] for view, add trigger on update to appuser, check if app user view count hit some threshold and add viewing badges as necessary
+    - [ ] for favorited, do same
 
 # Getting Started with Create React App
 

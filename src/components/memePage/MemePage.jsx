@@ -1,5 +1,6 @@
 import Axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { useLocation } from "react-router";
 import MemeList from "../memeList/MemeList";
 import "./MemePage.scss";
@@ -91,6 +92,14 @@ export default function MemePage() {
 
   return (
     <div className="container">
+      <div className="btnNav">
+        <Link to="/dashboard">
+          <button>Dashboard</button>
+        </Link>
+        <Link to="/myPages">
+          <button>My Pages</button>
+        </Link>
+      </div>
       <h2>{title}</h2>
       <p id="description">{desc}</p>
       <h4>Categories of Memes: {categories}</h4>
