@@ -1,13 +1,8 @@
 import React from "react";
-import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 export default function PageList(props) {
   const { pages } = props;
-  const navigate = useNavigate();
-
-  const jumpToPage = (pageID) => {
-    navigate("/myPages/memePage", { state: pageID });
-  };
 
   const renderPages = () => {
     return (
@@ -15,13 +10,16 @@ export default function PageList(props) {
         {pages.map((row) => {
           return (
             <li key={row.pageID}>
-              <button
-                onClick={() => {
-                  jumpToPage(row.PageID);
+              <Link
+                to="/myPages/memePage"
+                state={{
+                  pageID: row.pageID,
+                  title: row.title,
+                  desc: row.description,
                 }}
               >
-                {row.title}
-              </button>
+                <button>{row.title}</button>
+              </Link>
             </li>
           );
         })}
