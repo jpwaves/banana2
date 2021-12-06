@@ -32,12 +32,12 @@
 - [not doing] add categories to the generate meme on dashboard
 - [ ] add user input checks to all inputs to make sure input length matches with db schema
 - [x] enforce 5 pages created max per user
-- [ ] work on adding badges for view and loyalty
-  - [ ] add view and loytalty stuff to the app user table (default both to 0)
+- [x] work on adding badges for view and loyalty
+  - [x] add view and loytalty stuff to the app user table (default both to 0)
   - [x] add side effect to genMeme in dashboard to increment the viewcount by 1 every time its called
-  - [ ] add triggers for both view and loyalty counts to automatically add badge if needed
+  - [x] add triggers for both view and loyalty counts to automatically add badge if needed
     - [x] for view, add trigger on update to appuser, check if app user view count hit some threshold and add viewing badges as necessary
-    - [ ] for loyalty, do same
+    - [x] for loyalty, do same
 - [?] test to confirm that favoriting memes works with the badges
 
 # Getting Started with Create React App

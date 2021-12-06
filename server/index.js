@@ -210,6 +210,38 @@ app.post("/incMemeViewCount", async (req, res) => {
     });
 });
 
+app.post("/updateDaysRegistered", async (req, res) => {
+  const { userID } = req.body;
+  const dateRegistered = await db
+    .execute("SELECT dateRegistered FROM appUser WHERE userID = ?", [userID])
+    .then(([data]) => {
+      return data[0].dateRegistered;
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+      return "";
+    });
+
+  if (!dateRegistered) {
+    return;
+  }
+
+  const dateDiff = Math.floor(
+    (new Date().getTime() - new Date(dateRegistered).getTime()) /
+      (1000 * 3600 * 24)
+  );
+
+  const query = "UPDATE appUser SET daysSinceRegister = ? WHERE userID = ?";
+  await db
+    .execute(query, [dateDiff, userID])
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
 app.post("/removeMemeFromPage", async (req, res) => {
   const { pageId, memeId } = req.body;
   const query = "DELETE FROM memesInPage WHERE pageID = ? AND memeID = ?";

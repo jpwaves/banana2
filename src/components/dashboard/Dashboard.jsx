@@ -19,7 +19,7 @@ export default function Dashboard({ userID }) {
     Axios.post("http://localhost:3001/incMemeViewCount", {
       userID,
     })
-      .then((res) => {
+      .then(() => {
         getBadges();
       })
       .catch((err) => {

@@ -35,6 +35,7 @@ export default function Login({ userID, onChange }) {
       return;
     }
     initUserRole();
+    updateLoyaltyCounter();
   }, [userID]);
 
   useEffect(() => {
@@ -84,6 +85,18 @@ export default function Login({ userID, onChange }) {
     } else {
       navigate("/dashboard");
     }
+  }
+
+  function updateLoyaltyCounter() {
+    Axios.post("http://localhost:3001/updateDaysRegistered", {
+      userID,
+    })
+      .then(() => {
+        console.log("succesfully updated loyalty");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   const initUserRole = () => {
