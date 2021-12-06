@@ -31,6 +31,7 @@
   - button below each meme to remove it?
 - [ ] add categories to the generate meme on dashboard
 - [ ] add user input checks to all inputs to make sure input length matches with db schema
+- [ ] enforce 5 pages created max per user
 
 # Getting Started with Create React App
 

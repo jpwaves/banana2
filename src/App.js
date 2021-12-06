@@ -5,6 +5,8 @@ import Login from "./components/login/Login";
 import AdminDashboard from "./components/adminDash/AdminDashboard";
 import React, { useState } from "react";
 import CreatePage from "./components/createPage/CreatePage";
+import MyPages from "./components/myPages/MyPages";
+import MemePage from "./components/memePage/MemePage";
 
 function App() {
   const [userId, setUserId] = useState(0);
@@ -21,7 +23,9 @@ function App() {
           />
           <Route path="/dashboard" element={<Dashboard userID={userId} />} />
           <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/createPage" element={<CreatePage />} />
+          <Route path="/createPage" element={<CreatePage userID={userId} />} />
+          <Route path="/myPages" element={<MyPages userID={userId} />} />
+          <Route path="/myPages/memePage" element={<MemePage />} />
         </Routes>
       </BrowserRouter>
     </div>

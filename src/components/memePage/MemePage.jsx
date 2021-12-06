@@ -1,6 +1,6 @@
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
-import MemeList from "../memeList/memeList";
+import MemeList from "../memeList/MemeList";
 
 export default function MemePage(props) {
   const { pageId } = props;
