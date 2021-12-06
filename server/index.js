@@ -196,6 +196,20 @@ app.post("/addMemeToPage", async (req, res) => {
     });
 });
 
+app.post("/incMemeViewCount", async (req, res) => {
+  const { userID } = req.body;
+  const query =
+    "UPDATE appUser SET memesViewed = memesViewed + 1 WHERE userID = ?";
+  await db
+    .execute(query, [userID])
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
 app.post("/removeMemeFromPage", async (req, res) => {
   const { pageId, memeId } = req.body;
   const query = "DELETE FROM memesInPage WHERE pageID = ? AND memeID = ?";
@@ -357,16 +371,15 @@ app.post("/deleteMeme", async (req, res) => {
   await db
     .execute(query, [memeId])
     .then(([data]) => {
-      res.send({ result: 'Meme ' + memeId + ' deleted!' });
+      res.send({ result: "Meme " + memeId + " deleted!" });
     })
     .catch((err) => {
-      res.send({ result: 'Meme ' + memeId + ' unable to be deleted!' })
+      res.send({ result: "Meme " + memeId + " unable to be deleted!" });
     });
 });
 
 app.post("/getCategories", async (req, res) => {
-  const query =
-    "SELECT name FROM category;";
+  const query = "SELECT name FROM category;";
   await db
     .execute(query)
     .then(([data]) => {
@@ -376,4 +389,3 @@ app.post("/getCategories", async (req, res) => {
       res.status(400).send(err);
     });
 });
-

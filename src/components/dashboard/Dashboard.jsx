@@ -15,6 +15,18 @@ export default function Dashboard({ userID }) {
     getBadges();
   }, []);
 
+  useEffect(() => {
+    Axios.post("http://localhost:3001/incMemeViewCount", {
+      userID,
+    })
+      .then((res) => {
+        getBadges();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [img]);
+
   const genMeme = () => {
     Axios.post("http://localhost:3001/readMeme", {
       category: [],
