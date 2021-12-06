@@ -78,7 +78,7 @@ app.post("/readMeme", async (req, res) => {
 });
 
 app.post("/createMeme", async (req, res) => {
-  const { memeApiId, imgUrl, type, category } = req.body;
+  const { imgUrl, type, category } = req.body;
 
   let cats;
   try {
@@ -91,9 +91,9 @@ app.post("/createMeme", async (req, res) => {
   // knows category exists
 
   // insert meme
-  let queryMeme = "INSERT INTO meme (memeApiID, img, srcType) VALUES (?, ?, ?)";
+  let queryMeme = "INSERT INTO meme (img, srcType) VALUES (?, ?)";
   const memeId = await db
-    .execute(queryMeme, [memeApiId, imgUrl, type])
+    .execute(queryMeme, [imgUrl, type])
     .then(([data]) => {
       return data.insertId;
     })
