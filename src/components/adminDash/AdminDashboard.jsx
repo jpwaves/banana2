@@ -11,13 +11,21 @@ export default function AdminDashboard() {
     const [img, setImg] = useState("");
     const [removeMessage, setRemMsg] = useState("");
     const [viewMessage, setViewMsg] = useState("");
+
     const [createImg, setCreateImg] = useState("");
     const [createImgType, setImgType] = useState("");
     const [createMessage, setCreateMsg] = useState("");
     const [createImageValid, setValid] = useState("");
     const [createImageCategory, setCreateCategory] = useState("");
+
     const [category, setCategory] = useState("");
     const [categoryArr, setCategoryArr] = useState();
+
+    const [updateID, setUpdateID] = useState(0);
+    const [updateCat, setUpdateCat] = useState("");
+    const [updateType, setUpdateType] = useState("");
+    const [updateImg, setUpdateImg] = useState("");
+    const [updateMessage, setUpdateMsg] = useState("");
 
     useEffect(() => {
         getCategory();
@@ -109,11 +117,15 @@ export default function AdminDashboard() {
             });
     }
 
+    const updateMeme = () => {
+
+    }
+
     return (
         <div className="dash">
             <h2> Admin Dashboard </h2>
             <div className="viewMeme">
-                <h3> Meme View </h3>
+                <h3> View Meme </h3>
                 {
                     viewMessage && <h4> {viewMessage} </h4>
                 }
@@ -127,7 +139,7 @@ export default function AdminDashboard() {
                 </div>
             </div>
             <div className="delContainer">
-                <h3> Deletion </h3>
+                <h3> Delete Meme </h3>
                 <label for="del-id "> Meme ID </label>
                 <input type="text" id="del-id" onChange={(event) => {
                     setRemID(event.target.value)
@@ -177,6 +189,34 @@ export default function AdminDashboard() {
                     }} />
 
                 </div>
+            </div>
+            <div className="updateContainer">
+                <h3> Update Meme </h3>
+                <h5> Leave field blank if you want it to remain the same. </h5>
+                <label for="upd-id "> Meme ID (required) </label>
+                <input type="text" id="upd-id" onChange={(event) => {
+                    setUpdateID(event.target.value);
+                }} />
+
+                <label for="upd-img "> Image Link (optional) </label>
+                <input type="text" id="upd-img" onChange={(event) => {
+                    setUpdateImg(event.target.value);
+                }} />
+
+                <label for="upd-cat "> Category (optional) </label>
+                <input type="text" id="upd-cat" onChange={(event) => {
+                    setUpdateCat(event.target.value);
+                }} />
+
+                <label for="upd-type "> File Type (optional) </label>
+                <input type="text" id="upd-type" onChange={(event) => {
+                    setUpdateType(event.target.value);
+                }} />
+
+                <button onClick={() => updateMeme()} id="updatememe"> Update Meme </button>
+
+
+
             </div>
         </div>
     )

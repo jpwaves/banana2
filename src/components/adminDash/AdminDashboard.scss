@@ -1,37 +1,38 @@
-.main {
-    display: flex;
-    .createContainer {
-        flex: 0.6;
-    }
-
-    .categoryList {
-        flex: 0.4;
-        justify-content: center;
-    }
-}
-
 .dash {
     display: flex;
-    flex-direction: column ;
+    flex-direction: column;
     align-content: center;  
-
 }
 
 .viewMeme {
     padding: 20px 0px 20px 0px;
+    width: 50%;
 }
 
 .delContainer {
     padding: 20px 0px 20px 0px;
+    width: 50%;
 }
 
 .imgContainer {
-    padding: 20px 0px 20px 0px;   
+    padding: 20px 0px 20px 0px;  
+    width: 50%; 
 }
 
 .createContainer {
     padding: 20px 0px 20px 0px;
+    width: 50%;
 }
+
+.updateContainer {
+    padding: 20px 0px 20px 0px;
+    width: 50%;
+}
+
+label {
+    padding-top: 10px;
+}
+
 
 h4 {
     color: maroon;
