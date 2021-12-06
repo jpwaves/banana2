@@ -15,23 +15,36 @@ export default function CreatePage({ userID }) {
   };
 
   const makePage = () => {
-    Axios.post("http://localhost:3001/createPage", {
-      title,
-      desc,
-      userId: userID,
+    Axios.post("http://localhost:3001/getUserPages", {
+      userID,
     })
-      .then(() => {
-        console.log("successfully made page");
-        clearFields();
-        alert("successfully made page");
+      .then((res) => {
+        if (res.data.result.length > 5) {
+          alert("You have already created the max number of pages!");
+          return;
+        }
 
-        // navigate to dashboard after successfully creating the page
-        navigate("/dashboard");
+        Axios.post("http://localhost:3001/createPage", {
+          title,
+          desc,
+          userId: userID,
+        })
+          .then(() => {
+            console.log("successfully made page");
+            clearFields();
+            alert("successfully made page");
+
+            // navigate to dashboard after successfully creating the page
+            navigate("/dashboard");
+          })
+          .catch((err) => {
+            console.log(err);
+            clearFields();
+            alert("Failed to make page");
+          });
       })
       .catch((err) => {
         console.log(err);
-        clearFields();
-        alert("Failed to make page");
       });
   };
 
