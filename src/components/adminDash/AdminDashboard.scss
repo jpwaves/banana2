@@ -1,0 +1,38 @@
+.main {
+    display: flex;
+    .createContainer {
+        flex: 0.6;
+    }
+
+    .categoryList {
+        flex: 0.4;
+        justify-content: center;
+    }
+}
+
+.dash {
+    display: flex;
+    flex-direction: column ;
+    align-content: center;  
+
+}
+
+.viewMeme {
+    padding: 20px 0px 20px 0px;
+}
+
+.delContainer {
+    padding: 20px 0px 20px 0px;
+}
+
+.imgContainer {
+    padding: 20px 0px 20px 0px;   
+}
+
+.createContainer {
+    padding: 20px 0px 20px 0px;
+}
+
+h4 {
+    color: maroon;
+}

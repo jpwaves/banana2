@@ -321,3 +321,43 @@ app.post("/getRole", async (req, res) => {
       res.status(400).send(err);
     });
 });
+
+app.post("/getMemeFromID", async (req, res) => {
+  const { memeId } = req.body;
+  const query = "SELECT img FROM meme WHERE memeID = ?";
+  await db
+    .execute(query, [memeId])
+    .then(([data]) => {
+      res.send({ result: data[0].img });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
+app.post("/deleteMeme", async (req, res) => {
+  const { memeId } = req.body;
+  const query = "DELETE FROM meme WHERE memeID = ?";
+  await db
+    .execute(query, [memeId])
+    .then(([data]) => {
+      res.send({ result: 'Meme ' + memeId + ' deleted!' });
+    })
+    .catch((err) => {
+      res.send({ result: 'Meme ' + memeId + ' unable to be deleted!' })
+    });
+});
+
+app.post("/getCategories", async (req, res) => {
+  const query =
+    "SELECT name FROM category;";
+  await db
+    .execute(query)
+    .then(([data]) => {
+      res.send({ result: data });
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
+});
+
