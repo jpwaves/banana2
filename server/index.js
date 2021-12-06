@@ -198,7 +198,7 @@ app.post("/addMemeToPage", async (req, res) => {
 
 app.post("/removeMemeFromPage", async (req, res) => {
   const { pageId, memeId } = req.body;
-  const query = "INSERT INTO memesInPage (pageID, memeID) VALUES (?, ?)";
+  const query = "DELETE FROM memesInPage WHERE pageID = ? AND memeID = ?";
   await db
     .execute(query, [pageId, memeId])
     .then(() => {
@@ -211,7 +211,22 @@ app.post("/removeMemeFromPage", async (req, res) => {
 
 app.post("/getPageMemes", async (req, res) => {
   const { pageId } = req.body;
-  const query = "SELECT memeID FROM memesInPage WHERE pageID = ?";
+  const query =
+    "SELECT memeID, img FROM meme JOIN memesInPage USING (memeID) WHERE pageID = ?";
+  await db
+    .execute(query, [pageId])
+    .then(([data]) => {
+      res.send({ result: data });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
+app.post("/getPageCategories", async (req, res) => {
+  const { pageId } = req.body;
+  const query =
+    "SELECT * FROM category JOIN pageCategory USING (categoryID) WHERE pageID = ?";
   await db
     .execute(query, [pageId])
     .then(([data]) => {
@@ -224,7 +239,8 @@ app.post("/getPageMemes", async (req, res) => {
 
 app.post("/getUserPages", async (req, res) => {
   const { userID } = req.body;
-  const query = "SELECT pageID, title FROM memePage WHERE creatorID = ?";
+  const query =
+    "SELECT pageID, title, description FROM memePage WHERE creatorID = ?";
   await db
     .execute(query, [userID])
     .then(([data]) => {

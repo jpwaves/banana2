@@ -7,7 +7,7 @@ export default function MyPages({ userID }) {
 
   const getUserPages = () => {
     Axios.post("http://localhost:3001/getUserPages", {
-      userID,
+      userID: 2,
     })
       .then((res) => {
         setPages(res.data.result);
