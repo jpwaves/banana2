@@ -28,7 +28,12 @@ export default function Login({ userID, onChange }) {
     console.log(loginStatus);
   }, [loginStatus]);
 
+  const firstUpdate2 = useRef(true);
   useEffect(() => {
+    if (firstUpdate2.current) {
+      firstUpdate2.current = false;
+      return;
+    }
     initUserRole();
   }, [userID]);
 
