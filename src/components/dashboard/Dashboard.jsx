@@ -13,7 +13,7 @@ export default function Dashboard({ userID }) {
   // adds the user's badges on page load
   useEffect(() => {
     getBadges();
-  });
+  }, []);
 
   const genMeme = () => {
     Axios.post("http://localhost:3001/readMeme", {
@@ -77,7 +77,9 @@ export default function Dashboard({ userID }) {
         <Link to="/createPage">
           <button>Create Page</button>
         </Link>
-        <button>My Pages</button>
+        <Link to="/myPages">
+          <button>My Pages</button>
+        </Link>
       </div>
       <h2> Click 'Generate Meme' to begin! </h2>
       <div className="memeContainer">

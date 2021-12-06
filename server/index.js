@@ -222,6 +222,19 @@ app.post("/getPageMemes", async (req, res) => {
     });
 });
 
+app.post("/getUserPages", async (req, res) => {
+  const { userID } = req.body;
+  const query = "SELECT pageID, title FROM memePage WHERE creatorID = ?";
+  await db
+    .execute(query, [userID])
+    .then(([data]) => {
+      res.send({ result: data });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
 app.post("/favoriteMeme", async (req, res) => {
   const { userId, memeId } = req.body;
   const query = "INSERT INTO favorites (userID, memeID) VALUES (?, ?);";
