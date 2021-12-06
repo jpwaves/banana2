@@ -7,7 +7,7 @@ export default function MemeList(props) {
 
   const removeMeme = (id) => {
     Axios.post("http://localhost:3001/removeMemeFromPage", {
-      pageId: 1,
+      pageId,
       memeId: id,
     })
       .then(() => {
