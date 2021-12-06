@@ -15,11 +15,21 @@ export default function AdminDashboard() {
     const [createImgType, setImgType] = useState("");
     const [createMessage, setCreateMsg] = useState("");
     const [createImageValid, setValid] = useState("");
+    const [createImageCategory, setCreateCategory] = useState("");
     const [category, setCategory] = useState("");
+    const [categoryArr, setCategoryArr] = useState();
 
     useEffect(() => {
         getCategory();
     });
+
+    useEffect(() => {
+        const cat = new Array();
+        for (var c in category) {
+            cat.push(category[c].name);
+        }
+        setCategoryArr(cat);
+    }, [category]);
 
 
     const getCategory = () => {
@@ -46,13 +56,33 @@ export default function AdminDashboard() {
             });
     }
 
+    const createMeme = () => {
+        setCreateMsg("Creating...");
+        Axios.post("http://localhost:3001/createMeme", {
+            imgUrl: createImg,
+            type: createImgType,
+            category: createImageCategory,
+        })
+            .then((res) => {
+                setCreateMsg('Created!');
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
     const addMeme = () => {
-        const acceptedFileTypes = ['jpeg', 'jpg', 'png', 'tiff', 'tif']
+        const acceptedFileTypes = ['jpeg', 'jpg', 'png', 'tiff', 'tif', 'gif']
         setCreateMsg("");
         if (acceptedFileTypes.includes(createImgType)) {
             if (createImageValid) {
-                setCreateMsg("");
-                createMeme();
+                if (categoryArr.includes(createImageCategory)) {
+                    setCreateMsg("");
+                    createMeme();
+                }
+                else {
+                    setCreateMsg("Invalid category. Please choose one of the valid categories listed above.");
+                }
             }
             else {
                 setCreateMsg("Invalid image link.");
@@ -60,14 +90,9 @@ export default function AdminDashboard() {
         }
 
         else {
-            setCreateMsg("Invalid file type. Please input one of 'jpeg', 'jpg', 'png', 'tiff', 'tif'.");
+            setCreateMsg("Invalid file type. Please enter one of: 'jpeg', 'jpg', 'png', 'tiff', 'tif', 'gif'");
         }
     }
-
-    const createMeme = () => {
-
-    }
-
 
     const viewMeme = () => {
         Axios.post("http://localhost:3001/getMemeFromID", {
@@ -115,7 +140,7 @@ export default function AdminDashboard() {
             <div className="createContainer">
                 <h3> Create Meme </h3>
                 <div className="categoryList">
-                    <h5> Valid Categories </h5>
+                    <h5> Valid Categories: </h5>
                     <BadgeList badges={category} />
                 </div>
                 <label for id="link-id"> Image Link </label>
@@ -125,7 +150,7 @@ export default function AdminDashboard() {
                 />
                 <label for id="category"> Category </label>
                 <input type='text' id='category' onChange={(event) => {
-                    setCategory(event.target.value);
+                    setCreateCategory(event.target.value);
                 }}
                 />
 
