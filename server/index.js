@@ -228,7 +228,7 @@ app.post("/updateDaysRegistered", async (req, res) => {
 
   const dateDiff = Math.floor(
     (new Date().getTime() - new Date(dateRegistered).getTime()) /
-      (1000 * 3600 * 24)
+    (1000 * 3600 * 24)
   );
 
   const query = "UPDATE appUser SET daysSinceRegister = ? WHERE userID = ?";
@@ -419,5 +419,32 @@ app.post("/getCategories", async (req, res) => {
     })
     .catch((err) => {
       res.status(400).send(err);
+    });
+});
+
+app.post("/updateMeme", async (req, res) => {
+  const { memeId, link, type } = req.body;
+  const query = "UPDATE meme SET img = ?, srcType = ? WHERE memeID = ?";
+  await db
+    .execute(query, [link, type, memeId])
+    .then(() => {
+      console.log("id" + memeId);
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
+});
+
+app.post("/getType", async (req, res) => {
+  const { memeId } = req.body;
+  const query = "SELECT srcType FROM meme WHERE memeID = ?";
+  await db
+    .execute(query, [memeId])
+    .then(([data]) => {
+      res.send({ result: data[0].srcType });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
     });
 });
