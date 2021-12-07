@@ -4,17 +4,15 @@ dotenv.config();
 
 const apiKey = process.env.API_KEY;
 
-const getMeme = (category) => {
+export const getMeme = async (category) => {
   const options = {
     method: "GET",
     url: "https://humor-jokes-and-memes.p.rapidapi.com/memes/random",
     params: {
       "api-key": apiKey,
-      number: "3",
-      "min-rating": "0",
-      "keywords-in-image": "false",
+      number: "1",
       "media-type": "image",
-      keywords: "cat",
+      keywords: category,
     },
     headers: {
       "x-rapidapi-host": "humor-jokes-and-memes.p.rapidapi.com",
@@ -22,17 +20,14 @@ const getMeme = (category) => {
     },
   };
 
-  axios
+  await axios
     .request(options)
     .then(function (response) {
       const meme = response.data;
       console.log(meme);
-      console.log(response.data);
       return meme;
     })
     .catch(function (error) {
       console.error(error);
     });
 };
-
-console.log(getMeme("test"));

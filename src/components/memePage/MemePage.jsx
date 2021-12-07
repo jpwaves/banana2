@@ -49,9 +49,9 @@ export default function MemePage() {
   }, []);
 
   const changeTitle = (newTitle) => {
-    if (newTitle.length > 40) {
+    if (newTitle.length === 0 || newTitle.length > 40) {
       alert(
-        "This title is too long! Keep the length of the title under 40 characters."
+        "Title must not be blank, and must have a length of under 40 characters."
       );
       return;
     }
