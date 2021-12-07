@@ -3,6 +3,7 @@ import "./AdminDashboard.scss"
 import { useState, useEffect } from "react";
 import Axios from 'axios';
 import BadgeList from '../badgeList/BadgeList';
+import { useNavigate } from "react-router";
 
 
 export default function AdminDashboard() {
@@ -172,6 +173,7 @@ export default function AdminDashboard() {
     //             console.log(err);
     //         });
     // }
+
 
     return (
         <div className="dash">
