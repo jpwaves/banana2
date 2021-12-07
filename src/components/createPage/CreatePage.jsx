@@ -16,6 +16,16 @@ export default function CreatePage({ userID }) {
   };
 
   const makePage = () => {
+    if (title.length === 0 || title.length > 40) {
+      alert("Page title must be less than 40 characters and not blank");
+      return;
+    }
+
+    if (desc.length > 200) {
+      alert("The description must be less than 200 characters");
+      return;
+    }
+
     Axios.post("http://localhost:3001/getUserPages", {
       userID,
     })
@@ -31,7 +41,6 @@ export default function CreatePage({ userID }) {
           userId: userID,
         })
           .then(() => {
-            console.log("successfully made page");
             clearFields();
             alert("successfully made page");
 
