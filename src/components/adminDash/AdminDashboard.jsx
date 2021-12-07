@@ -3,6 +3,7 @@ import "./AdminDashboard.scss"
 import { useState, useEffect } from "react";
 import Axios from 'axios';
 import BadgeList from '../badgeList/BadgeList';
+import { useNavigate } from "react-router";
 
 
 export default function AdminDashboard() {
@@ -22,9 +23,8 @@ export default function AdminDashboard() {
     const [categoryArr, setCategoryArr] = useState();
 
     const [updateID, setUpdateID] = useState(0);
-    const [updateCat, setUpdateCat] = useState("");
-    const [updateType, setUpdateType] = useState("");
-    const [updateImg, setUpdateImg] = useState("");
+    const [updateType, setUpdateType] = useState("init");
+    const [updateImg, setUpdateImg] = useState("init");
     const [updateMessage, setUpdateMsg] = useState("");
 
     useEffect(() => {
@@ -107,8 +107,8 @@ export default function AdminDashboard() {
             memeId: viewMemeID,
         })
             .then((res) => {
-                setViewMsg("");
                 setImg(res.data.result);
+                setViewMsg("")
             })
             .catch((err) => {
                 setViewMsg("Meme ID " + viewMemeID + " does not exist!");
@@ -117,9 +117,63 @@ export default function AdminDashboard() {
             });
     }
 
-    const updateMeme = () => {
+    // async function getImg(id) {
+    //     const link = await Axios.post("http://localhost:3001/getMemeFromID", {
+    //         memeId: id,
+    //     })
+    //         .then((res) => {
+    //             console.log("result" + res.data.result);
+    //             return res.data.result;
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //         });
+    //     return link;
+    // }
 
-    }
+
+    // function getType(id) {
+    //     Axios.post("http://localhost:3001/getType", {
+    //         memeId: id,
+    //     })
+    //         .then((res) => {
+    //             return res.data.result;
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //             return;
+    //         });
+    // }
+
+    // const updateMeme = () => {
+    //     setUpdateMsg("Updating...");
+    //     if (updateImg === "init") {
+    //         const newLink = getImg(updateID);
+    //         console.log("oldlink" + newLink);
+    //         console.log("link" + getImg(updateID));
+    //         setUpdateImg(getImg(updateID));
+    //     }
+    //     if (updateType === "init") {
+    //         setUpdateType(getType(updateID));
+    //     }
+
+    //     Axios.post("http://localhost:3001/updateMeme", {
+    //         memeId: updateID,
+    //         link: updateImg,
+    //         type: updateType,
+    //     })
+    //         .then((res) => {
+    //             console.log(updateID);
+    //             console.log(updateImg);
+    //             console.log(updateType);
+    //             setUpdateMsg('Updated!');
+    //         })
+    //         .catch((err) => {
+    //             setUpdateMsg("Unable to update.");
+    //             console.log(err);
+    //         });
+    // }
+
 
     return (
         <div className="dash">
@@ -131,9 +185,12 @@ export default function AdminDashboard() {
                 }
                 <label for="view-id "> Meme ID </label>
                 <input type="text" id="view-id" onChange={(event) => {
-                    setViewID(event.target.value)
+                    setViewID(event.target.value);
                 }} />
-                <button onClick={() => viewMeme()} id="viewMeme"> View Meme </button>
+                <button onClick={() => {
+                    setViewMsg("Loading meme " + viewMemeID + "...");
+                    viewMeme();
+                }} id="viewMeme"> View Meme </button>
                 <div className="imgContainer">
                     <img id="img" src={img} />
                 </div>
@@ -190,7 +247,7 @@ export default function AdminDashboard() {
 
                 </div>
             </div>
-            <div className="updateContainer">
+            {/* <div className="updateContainer">
                 <h3> Update Meme </h3>
                 <h5> Leave field blank if you want it to remain the same. </h5>
                 <label for="upd-id "> Meme ID (required) </label>
@@ -203,21 +260,18 @@ export default function AdminDashboard() {
                     setUpdateImg(event.target.value);
                 }} />
 
-                <label for="upd-cat "> Category (optional) </label>
-                <input type="text" id="upd-cat" onChange={(event) => {
-                    setUpdateCat(event.target.value);
-                }} />
-
                 <label for="upd-type "> File Type (optional) </label>
                 <input type="text" id="upd-type" onChange={(event) => {
                     setUpdateType(event.target.value);
                 }} />
 
+                {
+                    updateMessage && <h4> {updateMessage} </h4>
+                }
+
                 <button onClick={() => updateMeme()} id="updatememe"> Update Meme </button>
 
-
-
-            </div>
+            </div> */}
         </div>
     )
 }
