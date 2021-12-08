@@ -1,11 +1,5 @@
 import { db } from "./index.js";
 
-export const commaSepToArr = (str) => {
-  return str.split(",").map((elem) => {
-    return elem.trim();
-  });
-};
-
 const prepStringArrForQuery = (strArr) => {
   return strArr.map((elem) => {
     return "'" + elem + "'";
@@ -24,8 +18,14 @@ export const getCategories = async (category = []) => {
       return res;
     })
     .catch((err) => {
-      throw err;
+      console.log(err);
+      return -1;
     });
+
+  // exit if the db query failed
+  if (res === -1) {
+    return;
+  }
 
   const idOnly = res.map((elem) => {
     return elem.categoryID;
@@ -35,43 +35,4 @@ export const getCategories = async (category = []) => {
   });
 
   return [idOnly, nameOnly, res];
-};
-
-export const queryMemeUsingApiId = async (memeApiId) => {
-  const query = "SELECT * FROM meme WHERE memeApiId = ?";
-  const res = await db
-    .execute(query, [memeApiId])
-    .then(([res]) => {
-      return res;
-    })
-    .catch((err) => {
-      throw err;
-    });
-  return res;
-};
-
-export const queryUser = async (username) => {
-  const query = "SELECT * FROM appUser WHERE username = ?";
-  const res = await db
-    .execute(query, [username])
-    .then(([res]) => {
-      return res;
-    })
-    .catch((err) => {
-      throw err;
-    });
-  return res;
-};
-
-export const queryBadge = async (badgeName) => {
-  const query = "SELECT * FROM badge WHERE name = ?";
-  const res = await db
-    .execute(query, [badgeName])
-    .then(([res]) => {
-      return res;
-    })
-    .catch((err) => {
-      throw err;
-    });
-  return res;
 };

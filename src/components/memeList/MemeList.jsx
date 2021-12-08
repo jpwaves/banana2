@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 export default function MemeList(props) {
   const { pageId, categoryHandler } = props;
   const [memes, setMemes] = useState([]);
-  console.log(props);
   useEffect(() => {
     setMemes(props.memes);
   }, [props.memes]);
@@ -25,7 +24,6 @@ export default function MemeList(props) {
   };
 
   const renderMemes = () => {
-    console.log(memes);
     return (
       <ul>
         {memes.map((row) => {

@@ -2,13 +2,16 @@ import express from "express";
 import mysql from "mysql2/promise";
 import cors from "cors";
 import * as dotenv from "dotenv";
-import { getCategories, queryBadge, queryUser } from "./helpers.js";
+import { getCategories } from "./helpers.js";
 
 dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+const port = process.env.SERVER_PORT;
+
+// Create connection to MySQL database from environment variables
 export const db = await mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -16,11 +19,15 @@ export const db = await mysql.createConnection({
   database: process.env.DB_NAME,
 });
 
+// Checks if the given username-password combo is registered with the app
+// Returns object with true if the combo exists, false otherwise
 app.post("/checkCreds", async (req, res) => {
   const query = "SELECT true FROM appUser WHERE username = ? AND passwd = ?";
   await db
     .execute(query, [req.body.username, req.body.password])
     .then(([data]) => {
+      // if username, passwd combo exist in appuser, it'll return a value so res.length == 1
+      // if it doesn't exist, it'll return nothing so res.length == 0
       if (data.length > 0) {
         res.send({ result: true });
       } else {
@@ -30,11 +37,9 @@ app.post("/checkCreds", async (req, res) => {
     .catch((err) => {
       throw err;
     });
-
-  // if username, passwd combo exist in appuser, it'll return a value so res.length == 1
-  // if it doesn't exist, it'll return nothing so res.length == 0
 });
 
+// Adds a user (username and password) to the app
 app.post("/createUser", async (req, res) => {
   const { username } = req.body;
   const { password } = req.body;
@@ -54,6 +59,7 @@ app.post("/createUser", async (req, res) => {
     });
 });
 
+// Gets a random memes from the meme table in the MySQL database
 app.post("/readMeme", async (req, res) => {
   const { category } = req.body;
 
@@ -77,6 +83,7 @@ app.post("/readMeme", async (req, res) => {
     });
 });
 
+// Adds a new meme (must be assigned an existing category)
 app.post("/createMeme", async (req, res) => {
   const { imgUrl, type, category } = req.body;
 
@@ -88,7 +95,7 @@ app.post("/createMeme", async (req, res) => {
     return;
   }
 
-  // knows category exists
+  // knows category exists at this point
 
   // insert meme
   let queryMeme = "INSERT INTO meme (img, srcType) VALUES (?, ?)";
@@ -120,29 +127,8 @@ app.post("/createMeme", async (req, res) => {
     });
 });
 
-app.post("/addBadge", async (req, res) => {
-  const { badge, user } = req.body;
-
-  let userId, badgeId;
-  try {
-    userId = await queryUser(user);
-    badgeId = await queryBadge(badge);
-  } catch (err) {
-    throw new Error(err);
-  }
-
-  const query =
-    "INSERT INTO userAccumulatedBadges (userID, badgeID) VALUES (?, ?);";
-  await db
-    .execute(query, [userId[0].userID, badgeId[0].badgeID])
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((err) => {
-      res.status(400).send(err);
-    });
-});
-
+// Creates a page for specified user with the given title and description
+// NOTE: the description can be an empty string
 app.post("/createPage", async (req, res) => {
   const { title, desc, userId } = req.body;
   const query =
@@ -157,6 +143,8 @@ app.post("/createPage", async (req, res) => {
     });
 });
 
+// Updates the page's title (can't be blank)
+// Assumes the given input was already validated
 app.post("/updatePageTitle", async (req, res) => {
   const { pageId, newTitle } = req.body;
   const query = "UPDATE memePage SET title = ? WHERE pageID = ?";
@@ -170,6 +158,8 @@ app.post("/updatePageTitle", async (req, res) => {
     });
 });
 
+// Updates the page's description
+// Assumes the given input was already validated
 app.post("/updatePageDescription", async (req, res) => {
   const { pageId, newDesc } = req.body;
   const query = "UPDATE memePage SET description = ? WHERE pageID = ?";
@@ -183,6 +173,7 @@ app.post("/updatePageDescription", async (req, res) => {
     });
 });
 
+// Adds a given meme to the specified page
 app.post("/addMemeToPage", async (req, res) => {
   const { pageId, memeId } = req.body;
   const query = "INSERT INTO memesInPage (pageID, memeID) VALUES (?, ?)";
@@ -196,6 +187,7 @@ app.post("/addMemeToPage", async (req, res) => {
     });
 });
 
+// Increases the number of memes a user has viewed
 app.post("/incMemeViewCount", async (req, res) => {
   const { userID } = req.body;
   const query =
@@ -210,6 +202,8 @@ app.post("/incMemeViewCount", async (req, res) => {
     });
 });
 
+// Updates the recorded number of days since the user registered
+// NOTE: Called only after the user logs in
 app.post("/updateDaysRegistered", async (req, res) => {
   const { userID } = req.body;
   const dateRegistered = await db
@@ -228,7 +222,7 @@ app.post("/updateDaysRegistered", async (req, res) => {
 
   const dateDiff = Math.floor(
     (new Date().getTime() - new Date(dateRegistered).getTime()) /
-    (1000 * 3600 * 24)
+      (1000 * 3600 * 24)
   );
 
   const query = "UPDATE appUser SET daysSinceRegister = ? WHERE userID = ?";
@@ -242,6 +236,7 @@ app.post("/updateDaysRegistered", async (req, res) => {
     });
 });
 
+// Remove a given meme from the specified page
 app.post("/removeMemeFromPage", async (req, res) => {
   const { pageId, memeId } = req.body;
   const query = "DELETE FROM memesInPage WHERE pageID = ? AND memeID = ?";
@@ -255,6 +250,7 @@ app.post("/removeMemeFromPage", async (req, res) => {
     });
 });
 
+// Get all the memes for a specified page
 app.post("/getPageMemes", async (req, res) => {
   const { pageId } = req.body;
   const query =
@@ -269,6 +265,7 @@ app.post("/getPageMemes", async (req, res) => {
     });
 });
 
+// Get all the categories associated with the specified page
 app.post("/getPageCategories", async (req, res) => {
   const { pageId } = req.body;
   const query =
@@ -283,6 +280,7 @@ app.post("/getPageCategories", async (req, res) => {
     });
 });
 
+// Get all the pages the user has made
 app.post("/getUserPages", async (req, res) => {
   const { userID } = req.body;
   const query =
@@ -297,6 +295,7 @@ app.post("/getUserPages", async (req, res) => {
     });
 });
 
+// Relates a meme the user has favorited to the user
 app.post("/favoriteMeme", async (req, res) => {
   const { userId, memeId } = req.body;
   const query = "INSERT INTO favorites (userID, memeID) VALUES (?, ?);";
@@ -310,11 +309,12 @@ app.post("/favoriteMeme", async (req, res) => {
     });
 });
 
+// Checks if a meme was favorited by the user
 app.post("/checkFav", async (req, res) => {
   const { userId, memeId } = req.body;
   const query = "SELECT true FROM favorites WHERE userId = ? AND memeId = ?";
   await db
-    .execute(query, [req.body.userId, req.body.memeId])
+    .execute(query, [userId, memeId])
     .then(([data]) => {
       if (data.length > 0) {
         res.send({ result: true });
@@ -327,11 +327,12 @@ app.post("/checkFav", async (req, res) => {
     });
 });
 
+// Gets the user's id
 app.post("/getUserID", async (req, res) => {
   const { username } = req.body;
   const query = "SELECT userID FROM appUser WHERE username = ?;";
   await db
-    .execute(query, [req.body.username])
+    .execute(query, [username])
     .then(([data]) => {
       res.send({ result: data[0].userID });
     })
@@ -340,6 +341,7 @@ app.post("/getUserID", async (req, res) => {
     });
 });
 
+// Gets the badges the user has acquired
 app.post("/getUserBadges", async (req, res) => {
   const { userId } = req.body;
   const query =
@@ -354,23 +356,7 @@ app.post("/getUserBadges", async (req, res) => {
     });
 });
 
-app.listen(3001, () => {
-  console.log("yay");
-});
-
-app.post("/getUsername", async (req, res) => {
-  const { userID } = req.body;
-  const query = "SELECT username FROM appUser WHERE userID = ?;";
-  await db
-    .execute(query, [userID])
-    .then(([data]) => {
-      res.send({ result: data[0].username });
-    })
-    .catch((err) => {
-      res.status(400).send(err);
-    });
-});
-
+// Gets the user's role
 app.post("/getRole", async (req, res) => {
   const { userID } = req.body;
   const query = "SELECT role FROM appUser WHERE userID = ?;";
@@ -384,6 +370,7 @@ app.post("/getRole", async (req, res) => {
     });
 });
 
+// Gets the image link for a specific meme
 app.post("/getMemeFromID", async (req, res) => {
   const { memeId } = req.body;
   const query = "SELECT img FROM meme WHERE memeID = ?";
@@ -397,6 +384,7 @@ app.post("/getMemeFromID", async (req, res) => {
     });
 });
 
+// Removes a meme when given the meme's id
 app.post("/deleteMeme", async (req, res) => {
   const { memeId } = req.body;
   const query = "DELETE FROM meme WHERE memeID = ?";
@@ -410,25 +398,25 @@ app.post("/deleteMeme", async (req, res) => {
     });
 });
 
+// Get the names of all the categories
 app.post("/getCategories", async (req, res) => {
-  const query = "SELECT name FROM category;";
-  await db
-    .execute(query)
-    .then(([data]) => {
-      res.send({ result: data });
+  await getCategories([])
+    .then((data) => {
+      res.send({ result: data[1] });
     })
     .catch((err) => {
       res.status(400).send(err);
     });
 });
 
+// Update the image link and source type of the specified meme
+// NOTE: the new image link must be valid
 app.post("/updateMeme", async (req, res) => {
   const { memeId, link, type } = req.body;
   const query = "UPDATE meme SET img = ?, srcType = ? WHERE memeID = ?";
   await db
     .execute(query, [link, type, memeId])
     .then(() => {
-      console.log("id" + memeId);
       res.sendStatus(200);
     })
     .catch((err) => {
@@ -436,15 +424,7 @@ app.post("/updateMeme", async (req, res) => {
     });
 });
 
-app.post("/getType", async (req, res) => {
-  const { memeId } = req.body;
-  const query = "SELECT srcType FROM meme WHERE memeID = ?";
-  await db
-    .execute(query, [memeId])
-    .then(([data]) => {
-      res.send({ result: data[0].srcType });
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
+// Start express server
+app.listen(port, () => {
+  console.log("Server started on port " + port);
 });

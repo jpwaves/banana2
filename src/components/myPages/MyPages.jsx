@@ -20,7 +20,6 @@ export default function MyPages({ userID }) {
   };
 
   useEffect(() => {
-    console.log(userID);
     getUserPages();
   }, []);
 

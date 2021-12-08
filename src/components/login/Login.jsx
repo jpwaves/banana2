@@ -25,7 +25,6 @@ export default function Login({ userID, onChange }) {
     if (loginStatus) {
       initUserID();
     }
-    console.log(loginStatus);
   }, [loginStatus]);
 
   const firstUpdate2 = useRef(true);
@@ -48,7 +47,7 @@ export default function Login({ userID, onChange }) {
       password: password,
     })
       .then(() => {
-        console.log("success");
+        alert("Succesfully registered");
       })
       .catch((err) => {
         switch (err.response.status) {
@@ -90,13 +89,9 @@ export default function Login({ userID, onChange }) {
   function updateLoyaltyCounter() {
     Axios.post("http://localhost:3001/updateDaysRegistered", {
       userID,
-    })
-      .then(() => {
-        console.log("succesfully updated loyalty");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).catch((err) => {
+      console.log(err);
+    });
   }
 
   const initUserRole = () => {
@@ -104,7 +99,6 @@ export default function Login({ userID, onChange }) {
       userID: userID,
     })
       .then((res) => {
-        console.log("nrole: " + res.data.result);
         setRole(res.data.result);
       })
       .catch((err) => {
