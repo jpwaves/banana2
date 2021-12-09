@@ -45,7 +45,7 @@ To install, first git clone this project onto your local machine. If you already
 git clone git@github.com:jpwaves/banana2.git
 ```
 
-After cloning the repository, `cd` into the `banana2` directory and run `npm install` or `npm i` in the terminal to install all the necessary dependencies for the web app. Then `cd` into the `server` directory (which is within `banana2`) and create a file called `.env` and copy and paste the following template code into that file:
+After cloning the repository, `cd` into the `banana2` directory and run `npm install` or `npm i` in the terminal to install all the necessary dependencies for the web app. Then `cd` into the `server` directory (which is within `banana2`) and edit a file called `.env` that should contain the following template code in that file:
 
 ```
 PORT=3306
