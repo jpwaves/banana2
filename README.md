@@ -70,11 +70,6 @@ NOTE: If `node index.js` doesn't work in the `server` directory, you may need to
 
 Then, the app should be running and connected with the database.
 
-## Code Examples
-
-Show examples of usage:
-`put-your-code-here`
-
 ## Features
 
 List of features ready and TODOs for future development
