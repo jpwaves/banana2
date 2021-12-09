@@ -62,17 +62,19 @@ API_KEY=""
 
 Side Note: Although we included the API_KEY in our `.env` file, it is not necessary to run the app as we only used it to collect data for our MySQL database.
 
+Replace "<INSERT_DB_USER>" and "<INSERT_DB_USER_PASSWORD>" with the username and password for the MySQL user you are using to connect with your MySQL database and MySQL Workbench; don't forget to put the username and password in double quotes.
+
 Then, open up MySQL Workbench and connect to MySQL using the user and password that you will use for this web app. Within MySQL Workbench, navigate to the "Server" menu dropdown, and then select "Data Import". In the tab that opens up, choose "Import from Self-Contained File" and select the `banana-dump.sql` dump file that was provided with the project submission, and import the dump file.
 
 Back in terminal, have 2 terminal windows open at the same time; one window located in the `server` directory and the other window in the root directory of this repository (`banana2`). In the `server` directory run the following command to start the Express server and establish a connection between the front-end and back-end/MySQL database: `node index.js`. Afterwards, in the `banana2` directory, run the following command to start up the web app: `npm start`.
 
-NOTE: If `node index.js` doesn't work in the `server` directory, you may need to run `npm install` within the `server directory` and then run `node index.js`.
+NOTE: If `node index.js` doesn't work in the `server` directory, you may need to run `npm install` within the `server` directory and then run `node index.js`.
 
 Then, the app should be running and connected with the database.
 
 ## Features
 
-List of features ready and TODOs for future development
+List of features ready
 
 - View randomly generated memes
 - Favorite memes
