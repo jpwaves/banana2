@@ -43,14 +43,20 @@ app.post("/checkCreds", async (req, res) => {
 app.post("/createUser", async (req, res) => {
   const { username } = req.body;
   const { password } = req.body;
+  const date = new Date();
   if (username === "" && password === "") {
     res.sendStatus(400);
     return;
   }
   const query =
-    "INSERT INTO appUser (username, passwd, role) VALUES (?, ?, ?);";
+    "INSERT INTO appUser (username, passwd, role, dateRegistered) VALUES (?, ?, ?, ?);";
   await db
-    .execute(query, [username, password, "user"])
+    .execute(query, [
+      username,
+      password,
+      "user",
+      `${date.getUTCFullYear()}-${date.getUTCMonth() + 1}-${date.getUTCDate()}`,
+    ])
     .then(() => {
       res.sendStatus(200);
     })
