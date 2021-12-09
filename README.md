@@ -78,7 +78,12 @@ List of features ready
 
 - View randomly generated memes
 - Favorite memes
-- Create pages to add memes to
+- Create pages to display specific memes
+- View all pages created (can create 5 pages max)
+- Update page title and description
+- Automatically get and display badges in a list on the dashboard
+- Remove memes from a page
+- Register and log in users
 - Admin can only access the admin dashboard where you can create, read, and delete memes.
 
 ## Status
