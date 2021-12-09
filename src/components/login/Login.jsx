@@ -42,6 +42,15 @@ export default function Login({ userID, onChange }) {
   }, [userRole]);
 
   const addUser = () => {
+    if (username.length > 20) {
+      alert("Username must be less than or equal to 20 characters");
+      return;
+    }
+    if (password.length > 40) {
+      alert("Password must be less than or equal to 40 characters");
+      return;
+    }
+
     Axios.post("http://localhost:3001/createUser", {
       username: username,
       password: password,
