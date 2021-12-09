@@ -68,7 +68,7 @@ Then, open up MySQL Workbench and connect to MySQL using the user and password t
 
 Back in terminal, have 2 terminal windows open at the same time; one window located in the `server` directory and the other window in the root directory of this repository (`banana2`). In the `server` directory run the following command to start the Express server and establish a connection between the front-end and back-end/MySQL database: `node index.js`. Afterwards, in the `banana2` directory, run the following command to start up the web app: `npm start`.
 
-NOTE: If `node index.js` doesn't work in the `server` directory, you may need to run `npm install` within the `server directory` and then run `node index.js`.
+NOTE: If `node index.js` doesn't work in the `server` directory, you may need to run `npm install` within the `server` directory and then run `node index.js`.
 
 Then, the app should be running and connected with the database.
 
