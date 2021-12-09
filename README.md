@@ -1,112 +1,93 @@
-# TO DO LIST
+# Banana2
 
-- [x] Add badges to dashboard (put below current stuff)
-- [x] Fix display of memes on dashboard to be image fit
-- [x] Add "create page" and "my page" buttons on dashboard
-  - [x] create page:
-    - do an input popup to enter in page title and description
-    - submit button creates the new page in the database and reroutes user to the newly created page
-  - [x] my page:
-  - contains a bullet list of all the pages you have created
-  - bullets are just the page title
-- [x] Add react component for a page:
-  - put page title at top, description right below, page categories right below as comma separated string
-  - put 1 meme on 1 row, add more memes below
-- [ ] admin dashboard
-- [ ] write project report
-  - [ ] readme
-    - instructions for downloading and running app
-    - include all packages that need to be installed
-    - include all technologies used (and provide their download link)
-  - [ ] provide technical specs
-  - [ ] uml of db
-  - [ ] logical design (reverse engi the db in mysql workbench)
-  - [ ] provide user flow of app, list commands/methods user performs to interact w app
-  - [ ] lessons learned
-  - [ ] future work
-- [ ] record 5-7min video presentation
-  - give brief project overview (what is this), describe project schema, architecture, user functionality, user utility
-  - must show at least 3 CRUD ops w proof that they worked (i.e. show effects in db?)
-- [not doing] add page for favorited memes
-  - button below each meme to remove it?
-- [not doing] add categories to the generate meme on dashboard
-- [ ] add user input checks to all inputs to make sure input length matches with db schema
-- [x] enforce 5 pages created max per user
-- [x] work on adding badges for view and loyalty
-  - [x] add view and loytalty stuff to the app user table (default both to 0)
-  - [x] add side effect to genMeme in dashboard to increment the viewcount by 1 every time its called
-  - [x] add triggers for both view and loyalty counts to automatically add badge if needed
-    - [x] for view, add trigger on update to appuser, check if app user view count hit some threshold and add viewing badges as necessary
-    - [x] for loyalty, do same
-- [?] test to confirm that favoriting memes works with the badges
+Made to bring a smile to your face (the app is aptly named after a rotated
+banana that looks like a smile), banana2 is a web app where you can view an
+assortment of random memes, favorite them, and save them onto up to 5 custom
+pages. To gain access to all of these features, users must register with the web
+app.
 
-# Getting Started with Create React App
+## Table of contents
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- [General info](#general-info)
+- [Technologies](#technologies)
+- [Setup](#setup)
+- [Features](#features)
+- [Status](#status)
+- [Contact](#contact)
 
-## Available Scripts
+## General info
 
-In the project directory, you can run:
+This project is for the final project assignment of course CS3200 Database Design. New users can be registered with our web app. The admin user is built into the web app with username and password both being "admin".
 
-### `npm start`
+## Technologies
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Please install at least NodeJS version 14 or above before proceeding (or the LTS version). Link to download is [here](https://nodejs.org/en/download/).
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Axios - version 0.24.0
+- dotenv - version 10.0.0
+- mysql2 - version 2.3.3
+- node-sass - version 6.0.1
+- react - version 17.0.2
+- react-dom - version 17.0.2
+- react-router-dom - version 6.0.2
+- react-scripts - version 4.0.3
+- sass - version 1.44.0
+- cors - version 2.8.5
+- express - 4.17.1
 
-### `npm test`
+## Setup
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Describe how to install / setup your local environement / add link to demo version.
 
-### `npm run build`
+If you don't have MySQL Workbench installed already, go to [this link](https://dev.mysql.com/downloads/workbench/) to install it.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To install, first git clone this project onto your local machine.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+git clone git@github.com:jpwaves/banana2.git
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+After cloning the repository, `cd` into the `banana2` directory and run `npm install` or `npm i` in the terminal to install all the necessary dependencies for the web app. Then `cd` into the `server` directory (which is within `banana2`) and create a file called `.env` and copy and paste the following template code into that file:
 
-### `npm run eject`
+```
+PORT=3306
+DB_HOST="localhost"
+DB_USER=<INSERT_DB_USER>
+DB_PWD=<INSERT_DB_USER_PASSWORD>
+DB_NAME="banana"
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+SERVER_PORT=3001
+API_KEY=""
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Side Note: Although we included the API_KEY in our `.env` file, it is not necessary to run the app as we only used it to collect data for our MySQL database.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Then, open up MySQL Workbench and connect to MySQL using the user and password that you will use for this web app. Within MySQL Workbench, navigate to the "Server" menu dropdown, and then select "Data Import". In the tab that opens up, choose "Import from Self-Contained File" and select the `banana-dump.sql` dump file that was provided with the project submission, and import the dump file.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Back in terminal, have 2 terminal windows open at the same time; one window located in the `server` directory and the other window in the root directory of this repository (`banana2`). In the `server` directory run the following command to start the Express server and establish a connection between the front-end and back-end/MySQL database: `node index.js`. Afterwards, in the `banana2` directory, run the following command to start up the web app: `npm start`.
 
-## Learn More
+NOTE: If `node index.js` doesn't work in the `server` directory, you may need to run `npm install` within the `server directory` and then run `node index.js`.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Then, the app should be running and connected with the database.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Code Examples
 
-### Code Splitting
+Show examples of usage:
+`put-your-code-here`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Features
 
-### Analyzing the Bundle Size
+List of features ready and TODOs for future development
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- View randomly generated memes
+- Favorite memes
+- Create pages to add memes to
+- Admin can only access the admin dashboard where you can create
 
-### Making a Progressive Web App
+## Status
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Project is: _finished_
 
-### Advanced Configuration
+## Contact
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Created by [@alyssamui](https://github.com/alyssamui) and [@jpwaves](https://github.com/jpwaves)
