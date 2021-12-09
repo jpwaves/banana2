@@ -77,7 +77,7 @@ List of features ready and TODOs for future development
 - View randomly generated memes
 - Favorite memes
 - Create pages to add memes to
-- Admin can only access the admin dashboard where you can create
+- Admin can only access the admin dashboard where you can create, read, and delete memes.
 
 ## Status
 
