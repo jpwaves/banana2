@@ -72,7 +72,7 @@ Then, the app should be running and connected with the database.
 
 ## Features
 
-List of features ready and TODOs for future development
+List of features ready
 
 - View randomly generated memes
 - Favorite memes
