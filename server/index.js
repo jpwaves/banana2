@@ -400,9 +400,11 @@ app.post("/deleteMeme", async (req, res) => {
 
 // Get the names of all the categories
 app.post("/getCategories", async (req, res) => {
-  await getCategories([])
-    .then((data) => {
-      res.send({ result: data[1] });
+  const query = "SELECT name FROM category;";
+  await db
+    .execute(query)
+    .then(([data]) => {
+      res.send({ result: data });
     })
     .catch((err) => {
       res.status(400).send(err);

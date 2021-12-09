@@ -2,7 +2,7 @@ import React from "react";
 import "./BadgeList.scss";
 
 export default function BadgeList(props) {
-  const { badges } = props;
+  let { badges } = props;
 
   const renderBadges = () => {
     return (
@@ -13,5 +13,6 @@ export default function BadgeList(props) {
       </ul>
     );
   };
+
   return badges.length === 0 ? null : renderBadges();
 }

@@ -17,7 +17,7 @@ export default function AdminDashboard() {
   const [createImageValid, setValid] = useState("");
   const [createImageCategory, setCreateCategory] = useState("");
 
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState([]);
   const [categoryArr, setCategoryArr] = useState();
 
   useEffect(() => {
@@ -25,8 +25,8 @@ export default function AdminDashboard() {
   });
 
   useEffect(() => {
-    const cat = [];
-    for (let c in category) {
+    const cat = new Array();
+    for (var c in category) {
       cat.push(category[c].name);
     }
     setCategoryArr(cat);
