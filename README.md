@@ -37,8 +37,6 @@ Please install at least NodeJS version 14 or above before proceeding (or the LTS
 
 ## Setup
 
-Describe how to install / setup your local environement / add link to demo version.
-
 If you don't have MySQL Workbench installed already, go to [this link](https://dev.mysql.com/downloads/workbench/) to install it.
 
 To install, first git clone this project onto your local machine. If you already download the zip file and extracted it, skip this step and `cd` into the root directory for this repository (`banana2`).
